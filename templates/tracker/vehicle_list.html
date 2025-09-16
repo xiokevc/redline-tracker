@@ -1,0 +1,20 @@
+{% extends "tracker/base.html" %}
+
+{% block title %}Your Vehicles{% endblock %}
+
+{% block content %}
+<h2>Your Vehicles</h2>
+
+<a href="{% url 'vehicle_create' %}">Add New Vehicle</a>
+
+<ul>
+    {% for vehicle in vehicles %}
+    <li>
+        <a href="{% url 'vehicle_detail' vehicle.id %}">{{ vehicle.make }} {{ vehicle.model }} ({{ vehicle.year }})</a>
+    </li>
+    {% empty %}
+    <li>No vehicles found.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
+

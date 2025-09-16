@@ -1,0 +1,50 @@
+{% extends "tracker/base.html" %}
+
+{% block title %}Vehicle Details{% endblock %}
+
+{% block content %}
+<h2>{{ vehicle.make }} {{ vehicle.model }} ({{ vehicle.year }})</h2>
+<p><strong>VIN:</strong> {{ vehicle.vin }}</p>
+<p><strong>Mileage:</strong> {{ vehicle.mileage }}</p>
+
+<a href="{% url 'vehicle_update' vehicle.id %}">Edit Vehicle</a> |
+<a href="{% url 'vehicle_delete' vehicle.id %}">Delete Vehicle</a>
+
+<hr />
+
+<h3>Service Records</h3>
+<a href="{% url 'service_record_create' vehicle.id %}">Add Service Record</a>
+<ul>
+    {% for record in service_records %}
+    <li>
+        {{ record.date }}: {{ record.service_type }} - ${{ record.cost }} 
+        <a href="{% url 'service_record_delete' record.id %}">Delete</a>
+    </li>
+    {% empty %}
+    <li>No service records.</li>
+    {% endfor %}
+</ul>
+
+<hr />
+
+<h3>Reminders</h3>
+<a href="{% url 'reminder_create' vehicle.id %}">Add Reminder</a>
+<ul>
+    {% for reminder in reminders %}
+    <li>
+        Due: {{ reminder.due_date }} - {{ reminder.service_type }} - ${{ reminder.cost }} 
+        {% if reminder.is_sent %}
+            (Sent)
+        {% else %}
+            (Pending)
+        {% endif %}
+        <a href="{% url 'reminder_delete' reminder.id %}">Delete</a>
+    </li>
+    {% empty %}
+    <li>No reminders.</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'vehicle_list' %}">Back to Vehicles</a>
+{% endblock %}
+
