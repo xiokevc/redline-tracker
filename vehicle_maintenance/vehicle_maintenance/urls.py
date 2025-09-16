@@ -1,10 +1,16 @@
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic import RedirectView
+from tracker import views as tracker_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', RedirectView.as_view(pattern_name='vehicle-list', permanent=False)),
+
+    # Authentication
+    path('accounts/', include('django.contrib.auth.urls')),  # login/logout
+
+    # Custom signup view
+    path('accounts/signup/', tracker_views.signup, name='signup'),
+
+    # Your app routes
     path('', include('tracker.urls')),
-    path('accounts/', include('django.contrib.auth.urls')),  # login/logout/password
 ]
