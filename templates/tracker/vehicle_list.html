@@ -1,20 +1,35 @@
 {% extends "tracker/base.html" %}
+{% load static %}
 
 {% block title %}Your Vehicles{% endblock %}
 
-{% block content %}
-<h2>Your Vehicles</h2>
-
-<a href="{% url 'vehicle_create' %}">Add New Vehicle</a>
-
-<ul>
-    {% for vehicle in vehicles %}
-    <li>
-        <a href="{% url 'vehicle_detail' vehicle.id %}">{{ vehicle.make }} {{ vehicle.model }} ({{ vehicle.year }})</a>
-    </li>
-    {% empty %}
-    <li>No vehicles found.</li>
-    {% endfor %}
-</ul>
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'tracker/css/vehicle_list.css' %}">
 {% endblock %}
 
+{% block content %}
+<div class="vehicle-list-container">
+    <div class="header">
+        <h2>Your Vehicles</h2>
+        
+        <a href="{% url 'tracker:vehicle-create' %}" class="btn add">+ Add New Vehicle</a>
+    </div>
+
+    {% if vehicles %}
+    <ul class="vehicle-cards">
+        {% for vehicle in vehicles %}
+        <li class="vehicle-card">
+            <a href="{% url 'tracker:vehicle-detail' vehicle.id %}">
+                <div class="vehicle-info">
+                    <strong>{{ vehicle.make }} {{ vehicle.model }}</strong><br>
+                    <span>{{ vehicle.year }}</span>
+                </div>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p class="empty">No vehicles found.</p>
+    {% endif %}
+</div>
+{% endblock %}

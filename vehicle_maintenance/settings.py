@@ -1,4 +1,3 @@
-import os
 from decouple import config
 from pathlib import Path
 
@@ -6,9 +5,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY')
 
-DEBUG = True  # Turn False in production
+DEBUG = config('DEBUG', cast=bool, default=True)
 
-ALLOWED_HOSTS = ['*']  # Change in production!
+# ALLOWED_HOSTS as a comma-separated list in .env, e.g. ALLOWED_HOSTS=localhost,127.0.0.1
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='*').split(',')
 
 # Apps
 INSTALLED_APPS = [
@@ -18,7 +18,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'tracker',  
+    'tracker',
+    'django_crontab',
+]
+
+CRONJOBS = [
+    ('0 9 * * *', 'django.core.management.call_command', ['send_reminders']),  # 9 AM daily
 ]
 
 MIDDLEWARE = [
@@ -51,7 +56,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'vehicle_maintenance.wsgi.application'
 
-# PostgreSQL database config via .env
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -77,9 +81,26 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # For collectstatic in production
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = 'vehicle_list'
-LOGOUT_REDIRECT_URL = 'login'
+LOGIN_URL = '/accounts/login/'             # Correct the login path
+LOGIN_REDIRECT_URL = 'vehicle-list'        # Redirect after login
+LOGOUT_REDIRECT_URL = '/accounts/login/'   # Redirect after logout
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT', cast=int, default=587)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool, default=True)
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='webmaster@localhost')
+
+# Optional: Security settings for production (uncomment and configure as needed)
+# SECURE_SSL_REDIRECT = True
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
+# X_FRAME_OPTIONS = 'DENY'
+
+print("DB_PASSWORD from env:", config('DB_PASSWORD'))

@@ -1,0 +1,12 @@
+Hi {{ user.username }},
+
+This is a reminder for your vehicle:
+
+Vehicle: {{ reminder.vehicle.make }} {{ reminder.vehicle.model }} ({{ reminder.vehicle.year }})
+Service: {{ reminder.service_type }}
+Due Date: {{ reminder.due_date }}
+Estimated Cost: ${{ reminder.cost }}
+
+Please ensure the service is completed on time.
+
+- Redline Tracker Team
