@@ -1,23 +1,31 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{% block title %}Redline Tracker{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+
+    <!-- Global styles -->
+    <link rel="stylesheet" href="{% static 'tracker/css/base.css' %}" />
+
+    
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
     <header>
-        <h1><a href="{% url 'vehicle_list' %}">Redline Tracker</a></h1>
-        <nav>
-            {% if user.is_authenticated %}
-                Hello, {{ user.username }} |
-                <a href="{% url 'logout' %}">Logout</a>
-            {% else %}
-                <a href="{% url 'login' %}">Login</a> | 
-                <a href="{% url 'signup' %}">Sign Up</a>
-            {% endif %}
-        </nav>
+        <div class="header-container">
+            <h1><a href="{% url 'vehicle-list' %}">Redline Tracker</a></h1>
+            <nav>
+                {% if user.is_authenticated %}
+                    <span>Hello, {{ user.username }}</span> |
+                    <a href="{% url 'logout' %}">Logout</a>
+                {% else %}
+                    <a href="{% url 'login' %}">Login</a> |
+                    <a href="{% url 'signup' %}">Sign Up</a>
+                {% endif %}
+            </nav>
+        </div>
         <hr />
     </header>
 
@@ -30,6 +38,9 @@
         <hr />
         <p>&copy; 2025 Redline Tracker</p>
     </footer>
+
+    {% block extra_js %}{% endblock %}
 </body>
 </html>
+
 
