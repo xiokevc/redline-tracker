@@ -1,0 +1,68 @@
+.service-record-form-container {
+    max-width: 500px;
+    margin: 4rem auto;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+}
+
+.service-record-form-container h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.service-record-form .form-group {
+    margin-bottom: 1.2rem;
+}
+
+.service-record-form label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.3rem;
+}
+
+.service-record-form input,
+.service-record-form select,
+.service-record-form textarea {
+    width: 100%;
+    padding: 0.6rem;
+    font-size: 1rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.error {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 0.3rem;
+}
+
+.btn-save {
+    padding: 0.6rem 1.2rem;
+    background-color: #28a745;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 1rem;
+}
+
+.btn-save:hover {
+    background-color: #218838;
+}
+
+.btn-cancel {
+    padding: 0.6rem 1.2rem;
+    background-color: #ccc;
+    color: #333;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.btn-cancel:hover {
+    background-color: #999;
+    color: white;
+}
