@@ -1,0 +1,68 @@
+.reminder-form-container {
+    max-width: 500px;
+    margin: 4rem auto;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+}
+
+.reminder-form-container h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.reminder-form .form-group {
+    margin-bottom: 1.2rem;
+}
+
+.reminder-form label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.3rem;
+}
+
+.reminder-form input,
+.reminder-form select,
+.reminder-form textarea {
+    width: 100%;
+    padding: 0.6rem;
+    font-size: 1rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.error {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 0.3rem;
+}
+
+.btn-save {
+    padding: 0.6rem 1.2rem;
+    background-color: #007BFF;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 1rem;
+}
+
+.btn-save:hover {
+    background-color: #0056b3;
+}
+
+.btn-cancel {
+    padding: 0.6rem 1.2rem;
+    background-color: #ccc;
+    color: #333;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.btn-cancel:hover {
+    background-color: #999;
+    color: white;
+}

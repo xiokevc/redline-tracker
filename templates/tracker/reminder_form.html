@@ -1,17 +1,33 @@
 {% extends "tracker/base.html" %}
+{% load static %}
 
 {% block title %}
     {% if form.instance.pk %}Edit Reminder{% else %}Add Reminder{% endif %}
 {% endblock %}
 
-{% block content %}
-<h2>{% if form.instance.pk %}Edit Reminder{% else %}Add Reminder{% endif %}</h2>
-
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-
-    <button type="submit">Save</button>
-    <a href="{% url 'vehicle_detail' form.instance.vehicle.id %}">Cancel</a>
-</form>
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'tracker/css/reminder_form.css' %}">
 {% endblock %}
+
+{% block content %}
+<div class="reminder-form-container">
+    <h2>{% if form.instance.pk %}Edit Reminder{% else %}Add Reminder{% endif %}</h2>
+
+    <form method="post" class="reminder-form">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.errors %}
+                    <div class="error">{{ field.errors|striptags }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="btn-save">Save</button>
+        <a href="{% url 'vehicle-detail' form.instance.vehicle.id %}" class="btn-cancel">Cancel</a>
+    </form>
+</div>
+{% endblock %}
+
