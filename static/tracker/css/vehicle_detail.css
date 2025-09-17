@@ -1,0 +1,92 @@
+.vehicle-detail-container {
+    max-width: 800px;
+    margin: 4rem auto;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+}
+
+.vehicle-detail-container h2 {
+    margin-bottom: 1rem;
+}
+
+.vehicle-detail-container p {
+    margin-bottom: 0.5rem;
+}
+
+.action-buttons {
+    margin: 1rem 0;
+}
+
+.record-list {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 1rem;
+}
+
+.record-list li {
+    margin-bottom: 0.8rem;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.4rem 0.8rem;
+    margin-top: 0.3rem;
+    margin-right: 0.5rem;
+    font-size: 0.95rem;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.btn.add {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn.add:hover {
+    background-color: #218838;
+}
+
+.btn.edit {
+    background-color: #007BFF;
+    color: white;
+}
+
+.btn.edit:hover {
+    background-color: #0056b3;
+}
+
+.btn.delete {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn.delete:hover {
+    background-color: #b02a37;
+}
+
+.btn.small {
+    font-size: 0.85rem;
+    padding: 0.3rem 0.6rem;
+}
+
+.status {
+    font-size: 0.85rem;
+    font-weight: bold;
+    margin-left: 0.5rem;
+}
+
+.status.sent {
+    color: green;
+}
+
+.status.pending {
+    color: orange;
+}
+
+.back-link {
+    margin-top: 2rem;
+}

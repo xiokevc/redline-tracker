@@ -1,50 +1,62 @@
 {% extends "tracker/base.html" %}
+{% load static %}
 
 {% block title %}Vehicle Details{% endblock %}
 
-{% block content %}
-<h2>{{ vehicle.make }} {{ vehicle.model }} ({{ vehicle.year }})</h2>
-<p><strong>VIN:</strong> {{ vehicle.vin }}</p>
-<p><strong>Mileage:</strong> {{ vehicle.mileage }}</p>
-
-<a href="{% url 'vehicle_update' vehicle.id %}">Edit Vehicle</a> |
-<a href="{% url 'vehicle_delete' vehicle.id %}">Delete Vehicle</a>
-
-<hr />
-
-<h3>Service Records</h3>
-<a href="{% url 'service_record_create' vehicle.id %}">Add Service Record</a>
-<ul>
-    {% for record in service_records %}
-    <li>
-        {{ record.date }}: {{ record.service_type }} - ${{ record.cost }} 
-        <a href="{% url 'service_record_delete' record.id %}">Delete</a>
-    </li>
-    {% empty %}
-    <li>No service records.</li>
-    {% endfor %}
-</ul>
-
-<hr />
-
-<h3>Reminders</h3>
-<a href="{% url 'reminder_create' vehicle.id %}">Add Reminder</a>
-<ul>
-    {% for reminder in reminders %}
-    <li>
-        Due: {{ reminder.due_date }} - {{ reminder.service_type }} - ${{ reminder.cost }} 
-        {% if reminder.is_sent %}
-            (Sent)
-        {% else %}
-            (Pending)
-        {% endif %}
-        <a href="{% url 'reminder_delete' reminder.id %}">Delete</a>
-    </li>
-    {% empty %}
-    <li>No reminders.</li>
-    {% endfor %}
-</ul>
-
-<a href="{% url 'vehicle_list' %}">Back to Vehicles</a>
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'tracker/css/vehicle_detail.css' %}">
 {% endblock %}
+
+{% block content %}
+<div class="vehicle-detail-container">
+    <h2>{{ vehicle.make }} {{ vehicle.model }} ({{ vehicle.year }})</h2>
+    <p><strong>VIN:</strong> {{ vehicle.vin }}</p>
+    <p><strong>Mileage:</strong> {{ vehicle.mileage }} miles</p>
+
+    <div class="action-buttons">
+        <a href="{% url 'vehicle_update' vehicle.id %}" class="btn edit">Edit Vehicle</a>
+        <a href="{% url 'vehicle_delete' vehicle.id %}" class="btn delete">Delete Vehicle</a>
+    </div>
+
+    <hr />
+
+    <h3>Service Records</h3>
+    <a href="{% url 'service_record_create' vehicle.id %}" class="btn add">Add Service Record</a>
+    <ul class="record-list">
+        {% for record in service_records %}
+            <li>
+                <strong>{{ record.date }}</strong>: {{ record.service_type }} – ${{ record.cost }}
+                <a href="{% url 'service_record_delete' record.id %}" class="btn small delete">Delete</a>
+            </li>
+        {% empty %}
+            <li>No service records.</li>
+        {% endfor %}
+    </ul>
+
+    <hr />
+
+    <h3>Reminders</h3>
+    <a href="{% url 'reminder_create' vehicle.id %}" class="btn add">Add Reminder</a>
+    <ul class="record-list">
+        {% for reminder in reminders %}
+            <li>
+                Due: <strong>{{ reminder.due_date }}</strong> – {{ reminder.service_type }} – ${{ reminder.cost }}
+                {% if reminder.is_sent %}
+                    <span class="status sent">(Sent)</span>
+                {% else %}
+                    <span class="status pending">(Pending)</span>
+                {% endif %}
+                <a href="{% url 'reminder_delete' reminder.id %}" class="btn small delete">Delete</a>
+            </li>
+        {% empty %}
+            <li>No reminders.</li>
+        {% endfor %}
+    </ul>
+
+    <div class="back-link">
+        <a href="{% url 'vehicle_list' %}">← Back to Vehicle List</a>
+    </div>
+</div>
+{% endblock %}
+
 
