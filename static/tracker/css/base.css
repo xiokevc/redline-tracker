@@ -28,9 +28,9 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
-    justify-content: space-between; /* logo left, links right */
+    justify-content: space-between; /* LOGO LEFT, LINKS RIGHT */
     align-items: center;
-    flex-wrap: wrap;
+    width: 100%;
 }
 
 .logo {
@@ -41,47 +41,50 @@ body {
 }
 
 .nav-links {
-    list-style: none;
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-}
-
-.nav-links li {
     display: flex;
     align-items: center;
+    gap: 0.8rem;
 }
 
-.nav-links li a,
-.nav-links li button,
-.nav-links li span {
+/* Inline form for logout button */
+.inline-form {
+    display: inline;
+    margin: 0;
+}
+
+.nav-links span {
     color: #fff;
     font-weight: bold;
-    text-decoration: none;
-    background: none;
-    border: none;
-    cursor: pointer;
+}
+
+/* Buttons */
+.nav-links .btn,
+.nav-links .logout-btn {
     padding: 0.4rem 0.8rem;
     border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
     transition: 0.3s;
 }
 
-.nav-links li a.primary-btn {
+.nav-links .primary-btn {
     background-color: #fff;
     color: #ff4c4c;
 }
 
-.nav-links li a.primary-btn:hover {
+.nav-links .primary-btn:hover {
     background-color: #e63b3b;
     color: #fff;
 }
 
-.nav-links li a.secondary-btn {
+.nav-links .secondary-btn {
     background-color: transparent;
     border: 2px solid #fff;
+    color: #fff;
 }
 
-.nav-links li a.secondary-btn:hover {
+.nav-links .secondary-btn:hover {
     background-color: #fff;
     color: #333;
 }
@@ -89,16 +92,15 @@ body {
 .logout-btn {
     background-color: #555;
     color: #fff;
-    border: none;
 }
 
 .logout-btn:hover {
     background-color: #333;
 }
 
-/* Main content spacing to avoid navbar overlap */
+/* Prevent main content from being overlapped by navbar */
 main {
-    margin-top: 80px; /* height of navbar */
+    margin-top: 80px;
 }
 
 /* Footer */
@@ -107,4 +109,3 @@ main {
     padding: 1rem;
     background-color: #f9f9f9;
 }
-

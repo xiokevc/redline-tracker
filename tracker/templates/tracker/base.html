@@ -5,43 +5,36 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{% block title %}Redline Tracker{% endblock %}</title>
-
-    <!-- Global styles -->
     <link rel="stylesheet" href="{% static 'tracker/css/base.css' %}" />
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <!-- Navbar -->
     <header class="navbar">
         <div class="nav-container">
-            <!-- Logo aligned left -->
+            <!-- Logo left -->
             <a href="{% url 'tracker:landing' %}" class="logo">Redline Tracker</a>
 
-            <!-- Links aligned right -->
-            <ul class="nav-links">
+            <!-- Links right -->
+            <div class="nav-links">
                 {% if user.is_authenticated %}
-                    <li><span>Hello, {{ user.username }}</span></li>
-                    <li>
-                        <form method="post" action="{% url 'tracker:logout' %}">
-                            {% csrf_token %}
-                            <button type="submit" class="btn logout-btn">Logout</button>
-                        </form>
-                    </li>
-                    <li><a href="{% url 'tracker:vehicle-list' %}" class="btn primary-btn">Dashboard</a></li>
+                    <span>Hello, {{ user.username }}</span>
+                    <form method="post" action="{% url 'tracker:logout' %}" class="inline-form">
+                        {% csrf_token %}
+                        <button type="submit" class="btn logout-btn">Logout</button>
+                    </form>
+                    <a href="{% url 'tracker:vehicle-list' %}" class="btn primary-btn">Dashboard</a>
                 {% else %}
-                    <li><a href="{% url 'tracker:login' %}" class="btn primary-btn">Login</a></li>
-                    <li><a href="{% url 'tracker:signup' %}" class="btn secondary-btn">Sign Up</a></li>
+                    <a href="{% url 'tracker:login' %}" class="btn primary-btn">Login</a>
+                    <a href="{% url 'tracker:signup' %}" class="btn secondary-btn">Sign Up</a>
                 {% endif %}
-            </ul>
+            </div>
         </div>
     </header>
 
-    <!-- Main content -->
     <main>
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <hr />
         <p>&copy; 2025 Redline Tracker</p>
@@ -50,5 +43,7 @@
     {% block extra_js %}{% endblock %}
 </body>
 </html>
+
+
 
 
