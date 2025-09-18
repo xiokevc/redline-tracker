@@ -11,15 +11,14 @@
 <div class="vehicle-list-container">
     <div class="header">
         <h2>Your Vehicles</h2>
-        
-        <a href="{% url 'tracker:vehicle-create' %}" class="btn add">+ Add New Vehicle</a>
+        <a href="{% url 'tracker:vehicle-create' %}" class="btn add" aria-label="Add New Vehicle">+ Add New Vehicle</a>
     </div>
 
     {% if vehicles %}
     <ul class="vehicle-cards">
         {% for vehicle in vehicles %}
         <li class="vehicle-card">
-            <a href="{% url 'tracker:vehicle-detail' vehicle.id %}">
+            <a href="{% url 'tracker:vehicle-detail' vehicle.pk %}">
                 <div class="vehicle-info">
                     <strong>{{ vehicle.make }} {{ vehicle.model }}</strong><br>
                     <span>{{ vehicle.year }}</span>

@@ -18,8 +18,8 @@
 
     <form method="post" class="delete-form">
         {% csrf_token %}
-        <button type="submit" class="btn-confirm">Yes, delete</button>
-        <a href="{% url 'vehicle-detail' reminder.vehicle.id %}" class="btn-cancel">Cancel</a>
+        <button type="submit" class="btn confirm">Yes, delete</button>
+        <a href="{% url 'tracker:vehicle-detail' reminder.vehicle.id %}" class="btn cancel">Cancel</a>
     </form>
 </div>
 {% endblock %}

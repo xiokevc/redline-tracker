@@ -16,7 +16,7 @@
         <div class="header-container">
             <!-- Use namespaced URL 'tracker:vehicle-list' -->
             <h1><a href="{% url 'tracker:vehicle-list' %}">Redline Tracker</a></h1>
-            <nav>
+            <nav aria-label="Primary navigation">
                 {% if user.is_authenticated %}
                     <span>Hello, {{ user.username }}</span> |
                     <a href="{% url 'logout' %}">Logout</a>
@@ -30,8 +30,7 @@
     </header>
 
     <main>
-        {% block content %}
-        {% endblock %}
+        {% block content %}{% endblock %}
     </main>
 
     <footer>
@@ -42,4 +41,3 @@
     {% block extra_js %}{% endblock %}
 </body>
 </html>
-

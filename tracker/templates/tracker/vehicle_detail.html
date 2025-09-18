@@ -14,19 +14,19 @@
     <p><strong>Mileage:</strong> {{ vehicle.mileage }} miles</p>
 
     <div class="action-buttons">
-        <a href="{% url 'vehicle_update' vehicle.id %}" class="btn edit">Edit Vehicle</a>
-        <a href="{% url 'vehicle_delete' vehicle.id %}" class="btn delete">Delete Vehicle</a>
+        <a href="{% url 'tracker:vehicle-update' vehicle.id %}" class="btn edit">Edit Vehicle</a>
+        <a href="{% url 'tracker:vehicle-delete' vehicle.id %}" class="btn delete">Delete Vehicle</a>
     </div>
 
     <hr />
 
     <h3>Service Records</h3>
-    <a href="{% url 'service_record_create' vehicle.id %}" class="btn add">Add Service Record</a>
+    <a href="{% url 'tracker:service-record-create' vehicle_pk=vehicle.id %}" class="btn add">Add Service Record</a>
     <ul class="record-list">
         {% for record in service_records %}
             <li>
                 <strong>{{ record.date }}</strong>: {{ record.service_type }} – ${{ record.cost }}
-                <a href="{% url 'service_record_delete' record.id %}" class="btn small delete">Delete</a>
+                <a href="{% url 'tracker:service-record-delete' record.id %}" class="btn small delete">Delete</a>
             </li>
         {% empty %}
             <li>No service records.</li>
@@ -36,7 +36,7 @@
     <hr />
 
     <h3>Reminders</h3>
-    <a href="{% url 'reminder_create' vehicle.id %}" class="btn add">Add Reminder</a>
+    <a href="{% url 'tracker:reminder-create' vehicle_pk=vehicle.id %}" class="btn add">Add Reminder</a>
     <ul class="record-list">
         {% for reminder in reminders %}
             <li>
@@ -46,7 +46,7 @@
                 {% else %}
                     <span class="status pending">(Pending)</span>
                 {% endif %}
-                <a href="{% url 'reminder_delete' reminder.id %}" class="btn small delete">Delete</a>
+                <a href="{% url 'tracker:reminder-delete' reminder.id %}" class="btn small delete">Delete</a>
             </li>
         {% empty %}
             <li>No reminders.</li>
@@ -54,7 +54,7 @@
     </ul>
 
     <div class="back-link">
-        <a href="{% url 'vehicle_list' %}">← Back to Vehicle List</a>
+        <a href="{% url 'tracker:vehicle-list' %}">← Back to Vehicle List</a>
     </div>
 </div>
 {% endblock %}

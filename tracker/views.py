@@ -16,7 +16,7 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('vehicle-list')
+            return redirect('vehicle-list')  # 🔄 updated
     else:
         form = UserCreationForm()
     return render(request, 'registration/signup.html', {'form': form})
@@ -48,7 +48,7 @@ class VehicleCreateView(LoginRequiredMixin, CreateView):
     model = Vehicle
     form_class = VehicleForm
     template_name = 'tracker/vehicle_form.html'
-    success_url = reverse_lazy('vehicle-list')
+    success_url = reverse_lazy('vehicle-list')  # 🔄 updated
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -59,13 +59,13 @@ class VehicleUpdateView(LoginRequiredMixin, UserOwnsObjectMixin, UpdateView):
     model = Vehicle
     form_class = VehicleForm
     template_name = 'tracker/vehicle_form.html'
-    success_url = reverse_lazy('vehicle-list')
+    success_url = reverse_lazy('vehicle-list')  # 🔄 updated
 
 
 class VehicleDeleteView(LoginRequiredMixin, UserOwnsObjectMixin, DeleteView):
     model = Vehicle
     template_name = 'tracker/vehicle_confirm_delete.html'
-    success_url = reverse_lazy('vehicle-list')
+    success_url = reverse_lazy('vehicle-list')  # 🔄 updated
 
 
 # 🧰 ServiceRecord Views
@@ -83,7 +83,7 @@ class ServiceRecordCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('vehicle-detail', kwargs={'pk': self.vehicle.pk})
+        return reverse('vehicle-detail', kwargs={'pk': self.vehicle.pk})  # 🔄 already uses dash
 
 
 class ServiceRecordUpdateView(LoginRequiredMixin, UpdateView):
@@ -95,7 +95,7 @@ class ServiceRecordUpdateView(LoginRequiredMixin, UpdateView):
         return ServiceRecord.objects.filter(vehicle__user=self.request.user)
 
     def get_success_url(self):
-        return reverse('vehicle-detail', kwargs={'pk': self.object.vehicle.pk})
+        return reverse('vehicle-detail', kwargs={'pk': self.object.vehicle.pk})  # 🔄 already uses dash
 
 
 class ServiceRecordDeleteView(LoginRequiredMixin, DeleteView):
@@ -106,7 +106,7 @@ class ServiceRecordDeleteView(LoginRequiredMixin, DeleteView):
         return ServiceRecord.objects.filter(vehicle__user=self.request.user)
 
     def get_success_url(self):
-        return reverse('vehicle-detail', kwargs={'pk': self.object.vehicle.pk})
+        return reverse('vehicle-detail', kwargs={'pk': self.object.vehicle.pk})  # 🔄 already uses dash
 
 
 # ⏰ Reminder Views
@@ -124,7 +124,7 @@ class ReminderCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('vehicle-detail', kwargs={'pk': self.vehicle.pk})
+        return reverse('vehicle-detail', kwargs={'pk': self.vehicle.pk})  # 🔄 already uses dash
 
 
 class ReminderUpdateView(LoginRequiredMixin, UpdateView):
@@ -136,7 +136,7 @@ class ReminderUpdateView(LoginRequiredMixin, UpdateView):
         return Reminder.objects.filter(vehicle__user=self.request.user)
 
     def get_success_url(self):
-        return reverse('vehicle-detail', kwargs={'pk': self.object.vehicle.pk})
+        return reverse('vehicle-detail', kwargs={'pk': self.object.vehicle.pk})  # 🔄 already uses dash
 
 
 class ReminderDeleteView(LoginRequiredMixin, DeleteView):
@@ -147,4 +147,4 @@ class ReminderDeleteView(LoginRequiredMixin, DeleteView):
         return Reminder.objects.filter(vehicle__user=self.request.user)
 
     def get_success_url(self):
-        return reverse('vehicle-detail', kwargs={'pk': self.object.vehicle.pk})
+        return reverse('vehicle-detail', kwargs={'pk': self.object.vehicle.pk})  # 🔄 already uses dash

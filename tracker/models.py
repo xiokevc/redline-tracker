@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class Vehicle(models.Model):
     make = models.CharField(max_length=50)
     model = models.CharField(max_length=50)
@@ -12,8 +13,18 @@ class Vehicle(models.Model):
     def __str__(self):
         return f"{self.make} {self.model} ({self.year})"
 
+    class Meta:
+        ordering = ['make', 'model', '-year']
+        verbose_name = "Vehicle"
+        verbose_name_plural = "Vehicles"
+
+
 class ServiceRecord(models.Model):
-    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name='service_records')
+    vehicle = models.ForeignKey(
+        Vehicle,
+        on_delete=models.CASCADE,
+        related_name='service_records'
+    )
     date = models.DateField()
     service_type = models.CharField(max_length=50)
     notes = models.TextField(blank=True, null=True)
@@ -22,8 +33,18 @@ class ServiceRecord(models.Model):
     def __str__(self):
         return f"{self.service_type} on {self.date} for {self.vehicle}"
 
+    class Meta:
+        ordering = ['-date']
+        verbose_name = "Service Record"
+        verbose_name_plural = "Service Records"
+
+
 class Reminder(models.Model):
-    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name='reminders')
+    vehicle = models.ForeignKey(
+        Vehicle,
+        on_delete=models.CASCADE,
+        related_name='reminders'
+    )
     due_date = models.DateField()
     service_type = models.CharField(max_length=50)
     notes = models.TextField(blank=True, null=True)
@@ -32,3 +53,8 @@ class Reminder(models.Model):
 
     def __str__(self):
         return f"Reminder: {self.service_type} due on {self.due_date} for {self.vehicle}"
+
+    class Meta:
+        ordering = ['due_date']
+        verbose_name = "Reminder"
+        verbose_name_plural = "Reminders"

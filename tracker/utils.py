@@ -1,12 +1,14 @@
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.conf import settings
+from django.urls import reverse  # 🔄 import reverse to generate URLs
 
 def send_reminder_email(reminder):
     subject = f"Upcoming Service Reminder for {reminder.vehicle.make} {reminder.vehicle.model}"
     context = {
         'reminder': reminder,
         'user': reminder.vehicle.user,
+        'vehicle_url': reverse('vehicle-detail', kwargs={'pk': reminder.vehicle.pk}),  # 🔄 dash-style name
     }
     message = render_to_string('tracker/emails/reminder_email.txt', context)
     send_mail(
