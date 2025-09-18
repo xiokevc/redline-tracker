@@ -102,5 +102,3 @@ DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='webmaster@localhost')
 # SESSION_COOKIE_SECURE = True
 # CSRF_COOKIE_SECURE = True
 # X_FRAME_OPTIONS = 'DENY'
-
-print("DB_PASSWORD from env:", config('DB_PASSWORD'))
