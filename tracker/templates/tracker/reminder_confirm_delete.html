@@ -12,14 +12,18 @@
     <h2>Delete Reminder</h2>
     <p>
         Are you sure you want to delete this reminder for
-        <strong>{{ reminder.vehicle }}</strong>
-        due on <strong>{{ reminder.due_date }}</strong>?
+        <strong>{{ object.vehicle }}</strong>
+        due on <strong>{{ object.due_date }}</strong>?
     </p>
 
     <form method="post" class="delete-form">
         {% csrf_token %}
         <button type="submit" class="btn confirm">Yes, delete</button>
-        <a href="{% url 'tracker:vehicle-detail' reminder.vehicle.id %}" class="btn cancel">Cancel</a>
+        {% if object.vehicle %}
+            <a href="{% url 'tracker:vehicle-detail' object.vehicle.pk %}" class="btn cancel">Cancel</a>
+        {% else %}
+            <a href="{% url 'tracker:vehicle-list' %}" class="btn cancel">Cancel</a>
+        {% endif %}
     </form>
 </div>
 {% endblock %}

@@ -26,7 +26,15 @@
         {% endfor %}
 
         <button type="submit" class="btn save">Save</button>
-        <a href="{% url 'tracker:vehicle-detail' vehicle.id %}" class="btn cancel">Cancel</a>
+        {# Use object.vehicle as fallback to ensure URL reverses correctly #}
+        {% if vehicle %}
+            <a href="{% url 'tracker:vehicle-detail' vehicle.id %}" class="btn cancel">Cancel</a>
+        {% elif object.vehicle %}
+            <a href="{% url 'tracker:vehicle-detail' object.vehicle.id %}" class="btn cancel">Cancel</a>
+        {% else %}
+            <a href="{% url 'tracker:vehicle-list' %}" class="btn cancel">Cancel</a>
+        {% endif %}
     </form>
 </div>
 {% endblock %}
+

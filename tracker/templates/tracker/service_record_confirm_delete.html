@@ -12,14 +12,20 @@
     <h2>Delete Service Record</h2>
     <p>
         Are you sure you want to delete this service record for
-        <strong>{{ service_record.vehicle }}</strong>
-        on <strong>{{ service_record.date }}</strong>?
+        <strong>{{ object.vehicle }}</strong>
+        on <strong>{{ object.date }}</strong>?
     </p>
 
     <form method="post" class="delete-form">
         {% csrf_token %}
         <button type="submit" class="btn confirm">Yes, delete</button>
-        <a href="{% url 'tracker:vehicle-detail' service_record.vehicle.id %}" class="btn cancel">Cancel</a>
+
+        {# Cancel button safely redirects even if vehicle is missing #}
+        {% if object.vehicle %}
+            <a href="{% url 'tracker:vehicle-detail' object.vehicle.pk %}" class="btn cancel">Cancel</a>
+        {% else %}
+            <a href="{% url 'tracker:vehicle-list' %}" class="btn cancel">Cancel</a>
+        {% endif %}
     </form>
 </div>
 {% endblock %}

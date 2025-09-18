@@ -128,10 +128,16 @@ class ServiceRecordUpdateView(LoginRequiredMixin, UpdateView):
     def get_queryset(self):
         return ServiceRecord.objects.filter(vehicle__user=self.request.user).select_related('vehicle')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['vehicle'] = getattr(self.object, 'vehicle', None)
+        return context
+
     def get_success_url(self):
-        # Ensure vehicle exists; fallback to vehicle list if missing
-        vehicle_pk = self.object.vehicle.pk if self.object.vehicle else None
-        return reverse('tracker:vehicle-detail', kwargs={'pk': vehicle_pk}) if vehicle_pk else reverse('tracker:vehicle-list')
+        vehicle = getattr(self.object, 'vehicle', None)
+        if vehicle:
+            return reverse('tracker:vehicle-detail', kwargs={'pk': vehicle.pk})
+        return reverse('tracker:vehicle-list')
 
 
 class ServiceRecordDeleteView(LoginRequiredMixin, DeleteView):
@@ -141,9 +147,12 @@ class ServiceRecordDeleteView(LoginRequiredMixin, DeleteView):
     def get_queryset(self):
         return ServiceRecord.objects.filter(vehicle__user=self.request.user).select_related('vehicle')
 
-    def get_success_url(self):
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
         vehicle_pk = self.object.vehicle.pk if self.object.vehicle else None
-        return reverse('tracker:vehicle-detail', kwargs={'pk': vehicle_pk}) if vehicle_pk else reverse('tracker:vehicle-list')
+        self.object.delete()
+        success_url = reverse('tracker:vehicle-detail', kwargs={'pk': vehicle_pk}) if vehicle_pk else reverse('tracker:vehicle-list')
+        return redirect(success_url)
 
 
 # ⏰ Reminder Views
@@ -177,9 +186,16 @@ class ReminderUpdateView(LoginRequiredMixin, UpdateView):
     def get_queryset(self):
         return Reminder.objects.filter(vehicle__user=self.request.user).select_related('vehicle')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['vehicle'] = getattr(self.object, 'vehicle', None)
+        return context
+
     def get_success_url(self):
-        vehicle_pk = self.object.vehicle.pk if self.object.vehicle else None
-        return reverse('tracker:vehicle-detail', kwargs={'pk': vehicle_pk}) if vehicle_pk else reverse('tracker:vehicle-list')
+        vehicle = getattr(self.object, 'vehicle', None)
+        if vehicle:
+            return reverse('tracker:vehicle-detail', kwargs={'pk': vehicle.pk})
+        return reverse('tracker:vehicle-list')
 
 
 class ReminderDeleteView(LoginRequiredMixin, DeleteView):
@@ -189,6 +205,9 @@ class ReminderDeleteView(LoginRequiredMixin, DeleteView):
     def get_queryset(self):
         return Reminder.objects.filter(vehicle__user=self.request.user).select_related('vehicle')
 
-    def get_success_url(self):
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
         vehicle_pk = self.object.vehicle.pk if self.object.vehicle else None
-        return reverse('tracker:vehicle-detail', kwargs={'pk': vehicle_pk}) if vehicle_pk else reverse('tracker:vehicle-list')
+        self.object.delete()
+        success_url = reverse('tracker:vehicle-detail', kwargs={'pk': vehicle_pk}) if vehicle_pk else reverse('tracker:vehicle-list')
+        return redirect(success_url)
