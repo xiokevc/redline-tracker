@@ -16,7 +16,7 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('vehicle-list')  # 🔄 updated
+            return redirect('tracker:vehicle-list')  # ✅ namespaced
     else:
         form = UserCreationForm()
     return render(request, 'registration/signup.html', {'form': form})
@@ -48,7 +48,7 @@ class VehicleCreateView(LoginRequiredMixin, CreateView):
     model = Vehicle
     form_class = VehicleForm
     template_name = 'tracker/vehicle_form.html'
-    success_url = reverse_lazy('vehicle-list')  # 🔄 updated
+    success_url = reverse_lazy('tracker:vehicle-list')  # ✅ fixed
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -59,13 +59,13 @@ class VehicleUpdateView(LoginRequiredMixin, UserOwnsObjectMixin, UpdateView):
     model = Vehicle
     form_class = VehicleForm
     template_name = 'tracker/vehicle_form.html'
-    success_url = reverse_lazy('vehicle-list')  # 🔄 updated
+    success_url = reverse_lazy('tracker:vehicle-list')  # ✅ fixed
 
 
 class VehicleDeleteView(LoginRequiredMixin, UserOwnsObjectMixin, DeleteView):
     model = Vehicle
     template_name = 'tracker/vehicle_confirm_delete.html'
-    success_url = reverse_lazy('vehicle-list')  # 🔄 updated
+    success_url = reverse_lazy('tracker:vehicle-list')  # ✅ fixed
 
 
 # 🧰 ServiceRecord Views
@@ -75,6 +75,7 @@ class ServiceRecordCreateView(LoginRequiredMixin, CreateView):
     template_name = 'tracker/service_record_form.html'
 
     def dispatch(self, request, *args, **kwargs):
+        # ensure the vehicle belongs to the logged-in user
         self.vehicle = get_object_or_404(Vehicle, pk=kwargs['vehicle_pk'], user=request.user)
         return super().dispatch(request, *args, **kwargs)
 
@@ -82,8 +83,14 @@ class ServiceRecordCreateView(LoginRequiredMixin, CreateView):
         form.instance.vehicle = self.vehicle
         return super().form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # ✅ pass vehicle into template context so cancel button works
+        context['vehicle'] = self.vehicle
+        return context
+
     def get_success_url(self):
-        return reverse('vehicle-detail', kwargs={'pk': self.vehicle.pk})  # 🔄 already uses dash
+        return reverse('tracker:vehicle-detail', kwargs={'pk': self.vehicle.pk})  # ✅ fixed
 
 
 class ServiceRecordUpdateView(LoginRequiredMixin, UpdateView):
@@ -95,7 +102,7 @@ class ServiceRecordUpdateView(LoginRequiredMixin, UpdateView):
         return ServiceRecord.objects.filter(vehicle__user=self.request.user)
 
     def get_success_url(self):
-        return reverse('vehicle-detail', kwargs={'pk': self.object.vehicle.pk})  # 🔄 already uses dash
+        return reverse('tracker:vehicle-detail', kwargs={'pk': self.object.vehicle.pk})  # ✅ fixed
 
 
 class ServiceRecordDeleteView(LoginRequiredMixin, DeleteView):
@@ -106,7 +113,7 @@ class ServiceRecordDeleteView(LoginRequiredMixin, DeleteView):
         return ServiceRecord.objects.filter(vehicle__user=self.request.user)
 
     def get_success_url(self):
-        return reverse('vehicle-detail', kwargs={'pk': self.object.vehicle.pk})  # 🔄 already uses dash
+        return reverse('tracker:vehicle-detail', kwargs={'pk': self.object.vehicle.pk})  # ✅ fixed
 
 
 # ⏰ Reminder Views
@@ -116,6 +123,7 @@ class ReminderCreateView(LoginRequiredMixin, CreateView):
     template_name = 'tracker/reminder_form.html'
 
     def dispatch(self, request, *args, **kwargs):
+        # ensure the vehicle belongs to the logged-in user
         self.vehicle = get_object_or_404(Vehicle, pk=kwargs['vehicle_pk'], user=request.user)
         return super().dispatch(request, *args, **kwargs)
 
@@ -123,8 +131,14 @@ class ReminderCreateView(LoginRequiredMixin, CreateView):
         form.instance.vehicle = self.vehicle
         return super().form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # ✅ pass vehicle into template context so cancel button works
+        context['vehicle'] = self.vehicle
+        return context
+
     def get_success_url(self):
-        return reverse('vehicle-detail', kwargs={'pk': self.vehicle.pk})  # 🔄 already uses dash
+        return reverse('tracker:vehicle-detail', kwargs={'pk': self.vehicle.pk})  # ✅ fixed
 
 
 class ReminderUpdateView(LoginRequiredMixin, UpdateView):
@@ -136,7 +150,7 @@ class ReminderUpdateView(LoginRequiredMixin, UpdateView):
         return Reminder.objects.filter(vehicle__user=self.request.user)
 
     def get_success_url(self):
-        return reverse('vehicle-detail', kwargs={'pk': self.object.vehicle.pk})  # 🔄 already uses dash
+        return reverse('tracker:vehicle-detail', kwargs={'pk': self.object.vehicle.pk})  # ✅ fixed
 
 
 class ReminderDeleteView(LoginRequiredMixin, DeleteView):
@@ -147,4 +161,4 @@ class ReminderDeleteView(LoginRequiredMixin, DeleteView):
         return Reminder.objects.filter(vehicle__user=self.request.user)
 
     def get_success_url(self):
-        return reverse('vehicle-detail', kwargs={'pk': self.object.vehicle.pk})  # 🔄 already uses dash
+        return reverse('tracker:vehicle-detail', kwargs={'pk': self.object.vehicle.pk})  # ✅ fixed

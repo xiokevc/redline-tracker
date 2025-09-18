@@ -26,8 +26,7 @@
         {% endfor %}
 
         <button type="submit" class="btn save">Save</button>
-        <a href="{% url 'tracker:vehicle-detail' form.instance.vehicle.id %}" class="btn cancel">Cancel</a>
+        <a href="{% url 'tracker:vehicle-detail' vehicle.id %}" class="btn cancel">Cancel</a>
     </form>
 </div>
 {% endblock %}
-
