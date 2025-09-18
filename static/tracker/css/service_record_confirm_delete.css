@@ -1,16 +1,20 @@
 .delete-record-container {
     max-width: 600px;
     margin: 4rem auto;
-    padding: 2rem;
+    padding: 2.5rem 2rem;
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
     text-align: center;
+    font-family: Arial, sans-serif;
+    color: #333;
 }
 
 .delete-record-container h2 {
     color: #c0392b;
     margin-bottom: 1rem;
+    font-size: 1.8rem;
+    font-weight: 700;
 }
 
 .delete-form {
@@ -18,30 +22,41 @@
 }
 
 .btn-confirm {
-    padding: 0.6rem 1.2rem;
+    padding: 0.6rem 1.5rem;
     background-color: #e74c3c;
     color: white;
     border: none;
     border-radius: 5px;
-    font-weight: bold;
+    font-weight: 700;
     cursor: pointer;
     margin-right: 1rem;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
 }
 
-.btn-confirm:hover {
+.btn-confirm:hover,
+.btn-confirm:focus {
     background-color: #c0392b;
+    outline: none;
 }
 
 .btn-cancel {
-    padding: 0.6rem 1.2rem;
+    padding: 0.6rem 1.5rem;
     background-color: #bdc3c7;
     color: #333;
     text-decoration: none;
     border-radius: 5px;
-    font-weight: bold;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    display: inline-block;
+    border: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.btn-cancel:hover {
+.btn-cancel:hover,
+.btn-cancel:focus {
     background-color: #95a5a6;
     color: white;
+    outline: none;
 }
