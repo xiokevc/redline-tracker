@@ -11,11 +11,19 @@
 <div class="signup-container">
     <h2>Create an Account</h2>
 
+    {% if form.non_field_errors %}
+        <div class="error-message">
+            {% for error in form.non_field_errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <form method="post" class="signup-form" novalidate>
         {% csrf_token %}
         {% for field in form %}
             <div class="form-group">
-                {{ field.label_tag }}
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                 {{ field }}
                 {% if field.errors %}
                     <div class="error" role="alert">{{ field.errors|striptags }}</div>
@@ -27,10 +35,10 @@
     </form>
 
     <p class="login-link">
-        Already have an account?
-        <a href="{% url 'login' %}">Login here</a>.
+        Already have an account? <a href="{% url 'tracker:login' %}">Login here</a>.
     </p>
 </div>
 {% endblock %}
+
 
 

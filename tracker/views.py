@@ -1,25 +1,48 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.views import LoginView, LogoutView
 
 from .models import Vehicle, ServiceRecord, Reminder
 from .forms import VehicleForm, ServiceRecordForm, ReminderForm
 
+# 🏠 Landing page view
+def landing(request):
+    """
+    Display the landing page for first-time visitors.
+    Logged-in users are redirected to their vehicle list.
+    """
+    if request.user.is_authenticated:
+        return redirect('tracker:vehicle-list')
+    return render(request, 'tracker/landing.html')
 
-# 👤 Signup view (for new user registration)
+
+# 👤 Signup view
 def signup(request):
     if request.method == "POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('tracker:vehicle-list')  # ✅ namespaced
+            return redirect('tracker:vehicle-list')
     else:
         form = UserCreationForm()
     return render(request, 'registration/signup.html', {'form': form})
+
+
+# 👤 Login view using built-in LoginView
+class UserLoginView(LoginView):
+    template_name = 'registration/login.html'  # custom template
+    authentication_form = AuthenticationForm
+
+
+# 👤 Logout view using built-in LogoutView
+class UserLogoutView(LogoutView):
+    next_page = 'tracker:landing'  # redirect to landing page after logout
+    http_method_names = ['get', 'post']  # allow GET and POST requests for logout
 
 
 # 🔒 Mixin to ensure user can only access their own objects
@@ -48,7 +71,7 @@ class VehicleCreateView(LoginRequiredMixin, CreateView):
     model = Vehicle
     form_class = VehicleForm
     template_name = 'tracker/vehicle_form.html'
-    success_url = reverse_lazy('tracker:vehicle-list')  # ✅ fixed
+    success_url = reverse_lazy('tracker:vehicle-list')
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -59,13 +82,13 @@ class VehicleUpdateView(LoginRequiredMixin, UserOwnsObjectMixin, UpdateView):
     model = Vehicle
     form_class = VehicleForm
     template_name = 'tracker/vehicle_form.html'
-    success_url = reverse_lazy('tracker:vehicle-list')  # ✅ fixed
+    success_url = reverse_lazy('tracker:vehicle-list')
 
 
 class VehicleDeleteView(LoginRequiredMixin, UserOwnsObjectMixin, DeleteView):
     model = Vehicle
     template_name = 'tracker/vehicle_confirm_delete.html'
-    success_url = reverse_lazy('tracker:vehicle-list')  # ✅ fixed
+    success_url = reverse_lazy('tracker:vehicle-list')
 
 
 # 🧰 ServiceRecord Views
@@ -75,7 +98,6 @@ class ServiceRecordCreateView(LoginRequiredMixin, CreateView):
     template_name = 'tracker/service_record_form.html'
 
     def dispatch(self, request, *args, **kwargs):
-        # ensure the vehicle belongs to the logged-in user
         self.vehicle = get_object_or_404(Vehicle, pk=kwargs['vehicle_pk'], user=request.user)
         return super().dispatch(request, *args, **kwargs)
 
@@ -85,12 +107,11 @@ class ServiceRecordCreateView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # ✅ pass vehicle into template context so cancel button works
         context['vehicle'] = self.vehicle
         return context
 
     def get_success_url(self):
-        return reverse('tracker:vehicle-detail', kwargs={'pk': self.vehicle.pk})  # ✅ fixed
+        return reverse('tracker:vehicle-detail', kwargs={'pk': self.vehicle.pk})
 
 
 class ServiceRecordUpdateView(LoginRequiredMixin, UpdateView):
@@ -102,7 +123,7 @@ class ServiceRecordUpdateView(LoginRequiredMixin, UpdateView):
         return ServiceRecord.objects.filter(vehicle__user=self.request.user)
 
     def get_success_url(self):
-        return reverse('tracker:vehicle-detail', kwargs={'pk': self.object.vehicle.pk})  # ✅ fixed
+        return reverse('tracker:vehicle-detail', kwargs={'pk': self.object.vehicle.pk})
 
 
 class ServiceRecordDeleteView(LoginRequiredMixin, DeleteView):
@@ -113,7 +134,7 @@ class ServiceRecordDeleteView(LoginRequiredMixin, DeleteView):
         return ServiceRecord.objects.filter(vehicle__user=self.request.user)
 
     def get_success_url(self):
-        return reverse('tracker:vehicle-detail', kwargs={'pk': self.object.vehicle.pk})  # ✅ fixed
+        return reverse('tracker:vehicle-detail', kwargs={'pk': self.object.vehicle.pk})
 
 
 # ⏰ Reminder Views
@@ -123,7 +144,6 @@ class ReminderCreateView(LoginRequiredMixin, CreateView):
     template_name = 'tracker/reminder_form.html'
 
     def dispatch(self, request, *args, **kwargs):
-        # ensure the vehicle belongs to the logged-in user
         self.vehicle = get_object_or_404(Vehicle, pk=kwargs['vehicle_pk'], user=request.user)
         return super().dispatch(request, *args, **kwargs)
 
@@ -133,12 +153,11 @@ class ReminderCreateView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # ✅ pass vehicle into template context so cancel button works
         context['vehicle'] = self.vehicle
         return context
 
     def get_success_url(self):
-        return reverse('tracker:vehicle-detail', kwargs={'pk': self.vehicle.pk})  # ✅ fixed
+        return reverse('tracker:vehicle-detail', kwargs={'pk': self.vehicle.pk})
 
 
 class ReminderUpdateView(LoginRequiredMixin, UpdateView):
@@ -150,7 +169,7 @@ class ReminderUpdateView(LoginRequiredMixin, UpdateView):
         return Reminder.objects.filter(vehicle__user=self.request.user)
 
     def get_success_url(self):
-        return reverse('tracker:vehicle-detail', kwargs={'pk': self.object.vehicle.pk})  # ✅ fixed
+        return reverse('tracker:vehicle-detail', kwargs={'pk': self.object.vehicle.pk})
 
 
 class ReminderDeleteView(LoginRequiredMixin, DeleteView):
@@ -161,4 +180,4 @@ class ReminderDeleteView(LoginRequiredMixin, DeleteView):
         return Reminder.objects.filter(vehicle__user=self.request.user)
 
     def get_success_url(self):
-        return reverse('tracker:vehicle-detail', kwargs={'pk': self.object.vehicle.pk})  # ✅ fixed
+        return reverse('tracker:vehicle-detail', kwargs={'pk': self.object.vehicle.pk})

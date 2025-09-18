@@ -1,0 +1,24 @@
+{% extends "tracker/base.html" %}
+{% load static %}
+
+{% block title %}Welcome to Redline Tracker{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'tracker/css/landing.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="landing-container">
+    <h1>Welcome to Redline Tracker</h1>
+
+    {% if user.is_authenticated %}
+        <p>Hello, {{ user.username }}!</p>
+        <a class="btn" href="{% url 'tracker:vehicle-list' %}">Go to Dashboard</a>
+        <a class="btn logout-btn" href="{% url 'tracker:logout' %}">Logout</a>
+    {% else %}
+        <p>Track your vehicles and service records easily. Get started by logging in or signing up!</p>
+        <a class="btn" href="{% url 'tracker:login' %}">Login</a>
+        <a class="btn signup-btn" href="{% url 'tracker:signup' %}">Sign Up</a>
+    {% endif %}
+</div>
+{% endblock %}
