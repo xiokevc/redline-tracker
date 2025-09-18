@@ -13,39 +13,42 @@
 <body>
     <!-- Navbar -->
     <header class="navbar">
-        <div class="container nav-container">
+        <div class="nav-container">
+            <!-- Logo aligned left -->
             <a href="{% url 'tracker:landing' %}" class="logo">Redline Tracker</a>
-            <nav aria-label="Primary navigation">
-                <ul class="nav-links">
-                    {% if user.is_authenticated %}
-                        <li><span>Hello, {{ user.username }}</span></li>
-                        <li>
-                            <form method="post" action="{% url 'tracker:logout' %}">
-                                {% csrf_token %}
-                                <button type="submit" class="btn logout-btn">Logout</button>
-                            </form>
-                        </li>
-                        <li><a href="{% url 'tracker:vehicle-list' %}" class="btn primary-btn">Dashboard</a></li>
-                    {% else %}
-                        <li><a href="{% url 'tracker:login' %}" class="btn primary-btn">Login</a></li>
-                        <li><a href="{% url 'tracker:signup' %}" class="btn secondary-btn">Sign Up</a></li>
-                    {% endif %}
-                </ul>
-            </nav>
+
+            <!-- Links aligned right -->
+            <ul class="nav-links">
+                {% if user.is_authenticated %}
+                    <li><span>Hello, {{ user.username }}</span></li>
+                    <li>
+                        <form method="post" action="{% url 'tracker:logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn logout-btn">Logout</button>
+                        </form>
+                    </li>
+                    <li><a href="{% url 'tracker:vehicle-list' %}" class="btn primary-btn">Dashboard</a></li>
+                {% else %}
+                    <li><a href="{% url 'tracker:login' %}" class="btn primary-btn">Login</a></li>
+                    <li><a href="{% url 'tracker:signup' %}" class="btn secondary-btn">Sign Up</a></li>
+                {% endif %}
+            </ul>
         </div>
     </header>
 
     <!-- Main content -->
-    <main class="site-main">
+    <main>
         {% block content %}{% endblock %}
     </main>
 
     <!-- Footer -->
     <footer class="footer">
-      <hr />
-      <p>&copy; 2025 Redline Tracker</p>
+        <hr />
+        <p>&copy; 2025 Redline Tracker</p>
     </footer>
 
     {% block extra_js %}{% endblock %}
 </body>
 </html>
+
+
