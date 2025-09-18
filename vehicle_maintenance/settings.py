@@ -8,7 +8,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', cast=bool, default=True)
 
 # ALLOWED_HOSTS as a comma-separated list in .env, e.g. ALLOWED_HOSTS=localhost,127.0.0.1
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='*').split(',')
+ALLOWED_HOSTS = [host.strip() for host in config('ALLOWED_HOSTS', default='*').split(',')]
 
 # Apps
 INSTALLED_APPS = [
@@ -46,7 +46,7 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
-                'django.template.context_processors.request',  # for auth in templates
+                'django.template.context_processors.request',  # needed for auth in templates
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
@@ -81,13 +81,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
-STATIC_ROOT = BASE_DIR / 'staticfiles'  # For collectstatic in production
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # for collectstatic in production
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_URL = '/accounts/login/'             # Correct the login path
-LOGIN_REDIRECT_URL = 'vehicle-list'        # Redirect after login
-LOGOUT_REDIRECT_URL = '/accounts/login/'   # Redirect after logout
+# Authentication URLs (make sure your urls.py uses these names if using reverse)
+LOGIN_URL = 'login'                   # better to use URL name, assuming you have it
+LOGIN_REDIRECT_URL = 'tracker:vehicle-list'
+LOGOUT_REDIRECT_URL = 'login'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = config('EMAIL_HOST')
@@ -97,7 +98,7 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool, default=True)
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='webmaster@localhost')
 
-# Optional: Security settings for production (uncomment and configure as needed)
+# Optional: Uncomment for production HTTPS security settings
 # SECURE_SSL_REDIRECT = True
 # SESSION_COOKIE_SECURE = True
 # CSRF_COOKIE_SECURE = True
