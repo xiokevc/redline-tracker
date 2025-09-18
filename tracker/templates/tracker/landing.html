@@ -13,12 +13,20 @@
 
     {% if user.is_authenticated %}
         <p>Hello, {{ user.username }}!</p>
-        <a class="btn" href="{% url 'tracker:vehicle-list' %}">Go to Dashboard</a>
-        <a class="btn logout-btn" href="{% url 'tracker:logout' %}">Logout</a>
+        <div class="auth-buttons">
+            <a class="btn" href="{% url 'tracker:vehicle-list' %}">Go to Dashboard</a>
+            <form method="post" action="{% url 'tracker:logout' %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn logout-btn">Logout</button>
+            </form>
+        </div>
     {% else %}
         <p>Track your vehicles and service records easily. Get started by logging in or signing up!</p>
-        <a class="btn" href="{% url 'tracker:login' %}">Login</a>
-        <a class="btn signup-btn" href="{% url 'tracker:signup' %}">Sign Up</a>
+        <div class="auth-buttons">
+            <a class="btn" href="{% url 'tracker:login' %}">Login</a>
+            <a class="btn signup-btn" href="{% url 'tracker:signup' %}">Sign Up</a>
+        </div>
     {% endif %}
 </div>
 {% endblock %}
+

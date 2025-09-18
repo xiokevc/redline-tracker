@@ -18,7 +18,10 @@
             <nav aria-label="Primary navigation">
                 {% if user.is_authenticated %}
                     <span>Hello, {{ user.username }}</span> |
-                    <a href="{% url 'tracker:logout' %}">Logout</a>
+                    <form method="post" action="{% url 'tracker:logout' %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="logout-btn">Logout</button>
+                    </form>
                 {% else %}
                     <a href="{% url 'tracker:login' %}">Login</a> |
                     <a href="{% url 'tracker:signup' %}">Sign Up</a>
@@ -40,4 +43,5 @@
     {% block extra_js %}{% endblock %}
 </body>
 </html>
+
 

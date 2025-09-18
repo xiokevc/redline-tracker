@@ -11,10 +11,7 @@ from .forms import VehicleForm, ServiceRecordForm, ReminderForm
 
 # 🏠 Landing page view
 def landing(request):
-    """
-    Display the landing page for first-time visitors.
-    Logged-in users are redirected to their vehicle list.
-    """
+    """Display the landing page. Authenticated users go to vehicle list."""
     if request.user.is_authenticated:
         return redirect('tracker:vehicle-list')
     return render(request, 'tracker/landing.html')
@@ -33,19 +30,19 @@ def signup(request):
     return render(request, 'registration/signup.html', {'form': form})
 
 
-# 👤 Login view using built-in LoginView
+# 👤 Login view
 class UserLoginView(LoginView):
-    template_name = 'registration/login.html'  # custom template
+    template_name = 'registration/login.html'
     authentication_form = AuthenticationForm
 
 
-# 👤 Logout view using built-in LogoutView
+# 👤 Logout view
 class UserLogoutView(LogoutView):
-    next_page = 'tracker:landing'  # redirect to landing page after logout
-    http_method_names = ['get', 'post']  # allow GET and POST requests for logout
+    next_page = reverse_lazy('tracker:landing')  # redirect after logout
+    http_method_names = ['get', 'post']  # allow logout via GET link
 
 
-# 🔒 Mixin to ensure user can only access their own objects
+# 🔒 Mixin to ensure user only accesses their own objects
 class UserOwnsObjectMixin(UserPassesTestMixin):
     def test_func(self):
         obj = self.get_object()
