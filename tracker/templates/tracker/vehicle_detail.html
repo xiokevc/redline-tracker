@@ -1,7 +1,7 @@
 {% extends "tracker/base.html" %}
 {% load static %}
 
-{% block title %}Vehicle Details{% endblock %}
+{% block title %}{{ vehicle.make }} {{ vehicle.model }} Details{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'tracker/css/vehicle_detail.css' %}">
@@ -14,19 +14,20 @@
     <p><strong>Mileage:</strong> {{ vehicle.mileage }} miles</p>
 
     <div class="action-buttons">
-        <a href="{% url 'tracker:vehicle-update' vehicle.id %}" class="btn edit">Edit Vehicle</a>
-        <a href="{% url 'tracker:vehicle-delete' vehicle.id %}" class="btn delete">Delete Vehicle</a>
+        <a href="{% url 'tracker:vehicle-update' vehicle.pk %}" class="btn edit">Edit Vehicle</a>
+        <a href="{% url 'tracker:vehicle-delete' vehicle.pk %}" class="btn delete">Delete Vehicle</a>
     </div>
 
     <hr />
 
     <h3>Service Records</h3>
-    <a href="{% url 'tracker:service-record-create' vehicle_pk=vehicle.id %}" class="btn add">Add Service Record</a>
+    <a href="{% url 'tracker:service-record-create' vehicle_pk=vehicle.pk %}" class="btn add">+ Add Service Record</a>
     <ul class="record-list">
         {% for record in service_records %}
             <li>
                 <strong>{{ record.date }}</strong>: {{ record.service_type }} – ${{ record.cost }}
-                <a href="{% url 'tracker:service-record-delete' record.id %}" class="btn small delete">Delete</a>
+                <a href="{% url 'tracker:service-record-update' record.pk %}" class="btn small edit">Edit</a>
+                <a href="{% url 'tracker:service-record-delete' record.pk %}" class="btn small delete">Delete</a>
             </li>
         {% empty %}
             <li>No service records.</li>
@@ -36,7 +37,7 @@
     <hr />
 
     <h3>Reminders</h3>
-    <a href="{% url 'tracker:reminder-create' vehicle_pk=vehicle.id %}" class="btn add">Add Reminder</a>
+    <a href="{% url 'tracker:reminder-create' vehicle_pk=vehicle.pk %}" class="btn add">+ Add Reminder</a>
     <ul class="record-list">
         {% for reminder in reminders %}
             <li>
@@ -46,7 +47,8 @@
                 {% else %}
                     <span class="status pending">(Pending)</span>
                 {% endif %}
-                <a href="{% url 'tracker:reminder-delete' reminder.id %}" class="btn small delete">Delete</a>
+                <a href="{% url 'tracker:reminder-update' reminder.pk %}" class="btn small edit">Edit</a>
+                <a href="{% url 'tracker:reminder-delete' reminder.pk %}" class="btn small delete">Delete</a>
             </li>
         {% empty %}
             <li>No reminders.</li>
@@ -58,5 +60,4 @@
     </div>
 </div>
 {% endblock %}
-
 
