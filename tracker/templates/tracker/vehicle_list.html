@@ -1,10 +1,13 @@
 {% extends "tracker/base.html" %}
 {% load static %}
+{% include 'tracker/navbar.html' %}
 
 {% block title %}Your Vehicles{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'tracker/css/vehicle_list.css' %}">
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 {% endblock %}
 
 {% block content %}
@@ -18,16 +21,24 @@
     <ul class="vehicle-cards" role="list">
         {% for vehicle in vehicles %}
         <li class="vehicle-card" role="listitem">
+            
+            <!-- Edit/Delete Icon Buttons -->
+            <div class="card-buttons">
+                <a href="{% url 'tracker:vehicle-update' vehicle.pk %}" class="icon-btn edit" title="Edit">
+                    <i class="fa fa-pencil"></i>
+                </a>
+                <a href="{% url 'tracker:vehicle-delete' vehicle.pk %}" class="icon-btn delete" title="Delete">
+                    <i class="fa fa-trash"></i>
+                </a>
+            </div>
+
+            <!-- Vehicle Info -->
             <a href="{% url 'tracker:vehicle-detail' vehicle.pk %}" class="vehicle-link">
                 <div class="vehicle-info">
                     <strong>{{ vehicle.make }} {{ vehicle.model }}</strong><br>
                     <span>{{ vehicle.year }}</span>
                 </div>
             </a>
-            <div class="vehicle-actions">
-                <a href="{% url 'tracker:vehicle-update' vehicle.pk %}" class="btn edit">Edit</a>
-                <a href="{% url 'tracker:vehicle-delete' vehicle.pk %}" class="btn delete">Delete</a>
-            </div>
         </li>
         {% endfor %}
     </ul>
@@ -36,3 +47,5 @@
     {% endif %}
 </div>
 {% endblock %}
+
+

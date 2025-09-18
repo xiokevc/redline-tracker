@@ -1,22 +1,33 @@
 {% extends "tracker/base.html" %}
+{% include 'tracker/navbar.html' %}
 {% load static %}
+{% include 'tracker/navbar.html' %}
 
 {% block title %}{{ vehicle.make }} {{ vehicle.model }} Details{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'tracker/css/vehicle_detail.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 {% endblock %}
 
 {% block content %}
 <div class="vehicle-detail-container">
-    <h2>{{ vehicle.make }} {{ vehicle.model }} ({{ vehicle.year }})</h2>
+    <div class="vehicle-header">
+        <h2>{{ vehicle.make }} {{ vehicle.model }} ({{ vehicle.year }})</h2>
+
+        <!-- Edit/Delete Vehicle Icons -->
+        <div class="card-buttons">
+            <a href="{% url 'tracker:vehicle-update' vehicle.pk %}" class="icon-btn edit" title="Edit Vehicle">
+                <i class="fa fa-pencil"></i>
+            </a>
+            <a href="{% url 'tracker:vehicle-delete' vehicle.pk %}" class="icon-btn delete" title="Delete Vehicle">
+                <i class="fa fa-trash"></i>
+            </a>
+        </div>
+    </div>
+
     <p><strong>VIN:</strong> {{ vehicle.vin }}</p>
     <p><strong>Mileage:</strong> {{ vehicle.mileage }} miles</p>
-
-    <div class="action-buttons">
-        <a href="{% url 'tracker:vehicle-update' vehicle.pk %}" class="btn edit">Edit Vehicle</a>
-        <a href="{% url 'tracker:vehicle-delete' vehicle.pk %}" class="btn delete">Delete Vehicle</a>
-    </div>
 
     <hr />
 
@@ -24,13 +35,21 @@
     <a href="{% url 'tracker:service-record-create' vehicle_pk=vehicle.pk %}" class="btn add">+ Add Service Record</a>
     <ul class="record-list">
         {% for record in service_records %}
-            <li>
-                <strong>{{ record.date }}</strong>: {{ record.service_type }} – ${{ record.cost }}
-                <a href="{% url 'tracker:service-record-update' record.pk %}" class="btn small edit">Edit</a>
-                <a href="{% url 'tracker:service-record-delete' record.pk %}" class="btn small delete">Delete</a>
-            </li>
+        <li class="record-item">
+            <strong>{{ record.date }}</strong> {{ record.service_type }} – ${{ record.cost }}
+
+            <!-- Edit/Delete Record Icons -->
+            <div class="card-buttons-inline">
+                <a href="{% url 'tracker:service-record-update' record.pk %}" class="icon-btn small edit" title="Edit">
+                    <i class="fa fa-pencil"></i>
+                </a>
+                <a href="{% url 'tracker:service-record-delete' record.pk %}" class="icon-btn small delete" title="Delete">
+                    <i class="fa fa-trash"></i>
+                </a>
+            </div>
+        </li>
         {% empty %}
-            <li>No service records.</li>
+        <li>No service records.</li>
         {% endfor %}
     </ul>
 
@@ -40,24 +59,34 @@
     <a href="{% url 'tracker:reminder-create' vehicle_pk=vehicle.pk %}" class="btn add">+ Add Reminder</a>
     <ul class="record-list">
         {% for reminder in reminders %}
-            <li>
-                Due: <strong>{{ reminder.due_date }}</strong> – {{ reminder.service_type }} – ${{ reminder.cost }}
-                {% if reminder.is_sent %}
-                    <span class="status sent">(Sent)</span>
-                {% else %}
-                    <span class="status pending">(Pending)</span>
-                {% endif %}
-                <a href="{% url 'tracker:reminder-update' reminder.pk %}" class="btn small edit">Edit</a>
-                <a href="{% url 'tracker:reminder-delete' reminder.pk %}" class="btn small delete">Delete</a>
-            </li>
+        <li class="record-item">
+            Due: <strong>{{ reminder.due_date }}</strong>  {{ reminder.service_type }} – ${{ reminder.cost }}
+            {% if reminder.is_sent %}
+                <span class="status sent">(Sent)</span>
+            {% else %}
+                <span class="status pending">(Pending)</span>
+            {% endif %}
+
+            <!-- Edit/Delete Reminder Icons -->
+            <div class="card-buttons-inline">
+                <a href="{% url 'tracker:reminder-update' reminder.pk %}" class="icon-btn small edit" title="Edit">
+                    <i class="fa fa-pencil"></i>
+                </a>
+                <a href="{% url 'tracker:reminder-delete' reminder.pk %}" class="icon-btn small delete" title="Delete">
+                    <i class="fa fa-trash"></i>
+                </a>
+            </div>
+        </li>
         {% empty %}
-            <li>No reminders.</li>
+        <li>No reminders.</li>
         {% endfor %}
     </ul>
 
-    <div class="back-link">
-        <a href="{% url 'tracker:vehicle-list' %}">← Back to Vehicle List</a>
+    <div class="back-link" style="text-align:center; margin-top:2rem;">
+        <a href="{% url 'tracker:vehicle-list' %}" class="btn add">← Back to Vehicle List</a>
     </div>
 </div>
 {% endblock %}
+
+
 

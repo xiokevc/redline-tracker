@@ -1,4 +1,5 @@
 {% load static %}
+{% include 'tracker/navbar.html' %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,27 +10,6 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <header class="navbar">
-        <div class="nav-container">
-            <!-- Logo left -->
-            <a href="{% url 'tracker:landing' %}" class="logo">Redline Tracker</a>
-
-            <!-- Links right -->
-            <div class="nav-links">
-                {% if user.is_authenticated %}
-                    <span>Hello, {{ user.username }}</span>
-                    <form method="post" action="{% url 'tracker:logout' %}" class="inline-form">
-                        {% csrf_token %}
-                        <button type="submit" class="btn logout-btn">Logout</button>
-                    </form>
-                    <a href="{% url 'tracker:vehicle-list' %}" class="btn primary-btn">Dashboard</a>
-                {% else %}
-                    <a href="{% url 'tracker:login' %}" class="btn primary-btn">Login</a>
-                    <a href="{% url 'tracker:signup' %}" class="btn secondary-btn">Sign Up</a>
-                {% endif %}
-            </div>
-        </div>
-    </header>
 
     <main>
         {% block content %}{% endblock %}
@@ -43,6 +23,7 @@
     {% block extra_js %}{% endblock %}
 </body>
 </html>
+
 
 
 
