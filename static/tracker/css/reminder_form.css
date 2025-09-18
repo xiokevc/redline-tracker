@@ -41,7 +41,7 @@
 .reminder-form input:focus,
 .reminder-form select:focus,
 .reminder-form textarea:focus {
-    border-color: #007BFF;
+    border-color: #ff4c4c;
     outline: none;
 }
 
@@ -53,7 +53,7 @@
 
 .btn-save {
     padding: 0.6rem 1.5rem;
-    background-color: #007BFF;
+    background-color: #ff4c4c;
     color: white;
     font-weight: 700;
     border: none;
@@ -66,7 +66,7 @@
 
 .btn-save:hover,
 .btn-save:focus {
-    background-color: #0056b3;
+    background-color: #ff0000;
     outline: none;
 }
 

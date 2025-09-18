@@ -72,13 +72,13 @@
 }
 
 .btn.save {
-    background-color: #28a745;
+    background-color: #ff4c4c;
     color: #fff;
 }
 
 .btn.save:hover,
 .btn.save:focus {
-    background-color: #218838;
+    background-color: #ff0000;
     outline: none;
 }
 

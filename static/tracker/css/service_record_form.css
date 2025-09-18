@@ -40,7 +40,7 @@
 .service-record-form input:focus,
 .service-record-form select:focus,
 .service-record-form textarea:focus {
-    border-color: #007BFF;
+    border-color: #ff4c4c;
     outline: none;
 }
 
@@ -52,7 +52,7 @@
 
 .btn-save {
     padding: 0.6rem 1.5rem;
-    background-color: #28a745;
+    background-color: #ff4c4c;
     color: white;
     font-weight: 700;
     border: none;
@@ -65,7 +65,7 @@
 
 .btn-save:hover,
 .btn-save:focus {
-    background-color: #218838;
+    background-color: #ff0000;
     outline: none;
 }
 

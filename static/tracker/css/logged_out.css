@@ -25,7 +25,7 @@
 .btn-login {
     display: inline-block;
     padding: 0.6rem 1.5rem;
-    background-color: #007BFF;
+    background-color: #ff4c4c;
     color: #fff;
     text-decoration: none;
     border-radius: 5px;
@@ -38,11 +38,11 @@
 
 .btn-login:hover,
 .btn-login:focus {
-    background-color: #0056b3;
+    background-color: #ff0000;
     outline: none;
 }
 
 .btn-login:focus-visible {
-    outline: 2px solid #0056b3;
+    outline: 2px solid #ff0000;
     outline-offset: 2px;
 }
