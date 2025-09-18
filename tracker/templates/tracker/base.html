@@ -8,34 +8,40 @@
 
     <!-- Global styles -->
     <link rel="stylesheet" href="{% static 'tracker/css/base.css' %}" />
-
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <header>
-        <div class="header-container">
-            <h1><a href="{% url 'tracker:vehicle-list' %}">Redline Tracker</a></h1>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="{% url 'tracker:landing' %}" class="logo">Redline Tracker</a>
             <nav aria-label="Primary navigation">
-                {% if user.is_authenticated %}
-                    <span>Hello, {{ user.username }}</span> |
-                    <form method="post" action="{% url 'tracker:logout' %}" style="display:inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="logout-btn">Logout</button>
-                    </form>
-                {% else %}
-                    <a href="{% url 'tracker:login' %}">Login</a> |
-                    <a href="{% url 'tracker:signup' %}">Sign Up</a>
-                {% endif %}
+                <ul class="nav-links">
+                    {% if user.is_authenticated %}
+                        <li><span>Hello, {{ user.username }}</span></li>
+                        <li>
+                            <form method="post" action="{% url 'tracker:logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn logout-btn">Logout</button>
+                            </form>
+                        </li>
+                        <li><a href="{% url 'tracker:vehicle-list' %}" class="btn primary-btn">Dashboard</a></li>
+                    {% else %}
+                        <li><a href="{% url 'tracker:login' %}" class="btn primary-btn">Login</a></li>
+                        <li><a href="{% url 'tracker:signup' %}" class="btn secondary-btn">Sign Up</a></li>
+                    {% endif %}
+                </ul>
             </nav>
         </div>
-        <hr />
     </header>
 
+    <!-- Main content -->
     <main>
         {% block content %}{% endblock %}
     </main>
 
-    <footer>
+    <!-- Footer -->
+    <footer class="footer">
         <hr />
         <p>&copy; 2025 Redline Tracker</p>
     </footer>
@@ -43,5 +49,3 @@
     {% block extra_js %}{% endblock %}
 </body>
 </html>
-
-

@@ -8,25 +8,54 @@
 {% endblock %}
 
 {% block content %}
-<div class="landing-container">
-    <h1>Welcome to Redline Tracker</h1>
+<header class="landing-header">
+    <div class="overlay">
+        <div class="header-content">
+            <h1>Keep Your Vehicles in Top Shape</h1>
+            <p>Track service records, set reminders, and never miss a maintenance task.</p>
+            <div class="auth-buttons">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'tracker:vehicle-list' %}" class="btn primary-btn">Go to Dashboard</a>
+                    <form method="post" action="{% url 'tracker:logout' %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn logout-btn">Logout</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'tracker:login' %}" class="btn primary-btn">Login</a>
+                    <a href="{% url 'tracker:signup' %}" class="btn secondary-btn">Sign Up</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</header>
 
-    {% if user.is_authenticated %}
-        <p>Hello, {{ user.username }}!</p>
-        <div class="auth-buttons">
-            <a class="btn" href="{% url 'tracker:vehicle-list' %}">Go to Dashboard</a>
-            <form method="post" action="{% url 'tracker:logout' %}" style="display:inline;">
-                {% csrf_token %}
-                <button type="submit" class="btn logout-btn">Logout</button>
-            </form>
+<section class="features">
+    <div class="container">
+        <h2>Why Choose Redline Tracker?</h2>
+        <div class="feature-cards">
+            <div class="card">
+                <h3>Track Service Records</h3>
+                <p>Log every oil change, tire rotation, and repair for all your vehicles.</p>
+            </div>
+            <div class="card">
+                <h3>Set Maintenance Reminders</h3>
+                <p>Get notified 24 hours before your next scheduled service via email.</p>
+            </div>
+            <div class="card">
+                <h3>Manage Multiple Vehicles</h3>
+                <p>Easily organize cars, motorcycles, and trucks in one convenient dashboard.</p>
+            </div>
         </div>
-    {% else %}
-        <p>Track your vehicles and service records easily. Get started by logging in or signing up!</p>
-        <div class="auth-buttons">
-            <a class="btn" href="{% url 'tracker:login' %}">Login</a>
-            <a class="btn signup-btn" href="{% url 'tracker:signup' %}">Sign Up</a>
-        </div>
-    {% endif %}
-</div>
+    </div>
+</section>
+
+<section class="cta">
+    <div class="container">
+        <h2>Ready to take control of your vehicle maintenance?</h2>
+        <a href="{% url 'tracker:signup' %}" class="btn primary-btn">Sign Up Now</a>
+    </div>
+</section>
 {% endblock %}
+
+
 
