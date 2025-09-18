@@ -5,10 +5,10 @@ from tracker import views as tracker_views
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    # Authentication URLs (login, logout)
+    # Authentication URLs (login, logout, password management)
     path('accounts/', include('django.contrib.auth.urls')),
 
-    # Custom signup view
+    # Custom signup view (placed before accounts/ to avoid conflict)
     path('accounts/signup/', tracker_views.signup, name='signup'),
 
     # Include tracker app URLs with namespace
