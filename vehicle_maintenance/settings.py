@@ -1,4 +1,3 @@
-"""Django settings for vehicle_maintenance project (Heroku-ready)"""
 from pathlib import Path
 import os
 from dotenv import load_dotenv
@@ -9,23 +8,23 @@ import dj_database_url
 # -----------------------------------------------------------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Load .env locally (does nothing on Heroku)
+
 load_dotenv()
 
 # -----------------------------------------------------------------------------
 # SECRET KEY
 # -----------------------------------------------------------------------------
-SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key')  # fallback for local dev
+SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key')  
 
 # -----------------------------------------------------------------------------
 # DEBUG
 # -----------------------------------------------------------------------------
-DEBUG = not os.getenv('ON_HEROKU')  # True locally, False on Heroku
+DEBUG = not os.getenv('ON_HEROKU')  
 
 # -----------------------------------------------------------------------------
 # ALLOWED HOSTS
 # -----------------------------------------------------------------------------
-ALLOWED_HOSTS = ["*"]  # or explicitly your domain/heroku app URL
+ALLOWED_HOSTS = ["*"]  
 
 # -----------------------------------------------------------------------------
 # INSTALLED APPS
@@ -45,7 +44,7 @@ INSTALLED_APPS = [
 # -----------------------------------------------------------------------------
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",  # <- whitenoise
+    "whitenoise.middleware.WhiteNoiseMiddleware", 
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -124,7 +123,7 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [
-    BASE_DIR / "static",  # your project-level static folder
+    BASE_DIR / "static",  
 ]
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"

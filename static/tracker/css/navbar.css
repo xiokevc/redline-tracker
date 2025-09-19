@@ -75,7 +75,7 @@
 
 .primary-btn:hover,
 .primary-btn:focus {
-    background-color: #ffffff; /* lighter red on hover */
+    background-color: #ffffff; 
     transform: translateY(-2px);
     outline: none;
 }

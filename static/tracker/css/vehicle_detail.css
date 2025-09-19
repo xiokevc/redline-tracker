@@ -1,8 +1,8 @@
 /* ========== PAGE CONTAINER ========== */
 .page-container {
-    max-width: 1200px;        /* fixed total width */
-    margin: 0 auto;           /* center horizontally */
-    padding: 0 2rem;          /* equal padding on both sides */
+    max-width: 1200px;        
+    margin: 0 auto;           
+    padding: 0 2rem;          
     box-sizing: border-box;
 }
 
@@ -24,8 +24,8 @@
 .main-content {
     display: flex;
     flex-wrap: nowrap;
-    gap: 1.5rem;               /* space between left & right columns */
-    margin: 0 auto 4rem;       /* center everything horizontally */
+    gap: 1.5rem;               
+    margin: 0 auto 4rem;       
     box-sizing: border-box;
 }
 
@@ -210,11 +210,11 @@
 }
 
 .status.sent {
-    color: #28a745; /* green */
+    color: #28a745; 
 }
 
 .status.pending {
-    color: #ff9800; /* orange */
+    color: #ff9800; 
 }
 
 /* ========== RESPONSIVE ========== */
