@@ -6,11 +6,11 @@ name = "pypi"
 [packages]
 django = "*"
 django-crontab = "*"
-psycopg2-binary = "*"
 python-dotenv = "*"
 whitenoise = "*"
 gunicorn = "*"
 dj-database-url = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 
