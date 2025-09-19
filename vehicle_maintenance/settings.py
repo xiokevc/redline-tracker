@@ -1,121 +1,142 @@
-from decouple import config
-from pathlib import Path
+"""
+Django settings for redline project (Heroku-ready)
+"""
 
-# Base directory of the project
+from pathlib import Path
+import os
+from dotenv import load_dotenv
+import dj_database_url
+
+# Load .env locally
+load_dotenv()
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+# -----------------------------------------------------------------------------
+# SECRET KEY
+# -----------------------------------------------------------------------------
+SECRET_KEY = os.getenv('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', cast=bool, default=True)
+# -----------------------------------------------------------------------------
+# DEBUG
+# -----------------------------------------------------------------------------
+if not 'ON_HEROKU' in os.environ:
+    DEBUG = True
+else:
+    DEBUG = False
 
-# Hosts allowed to serve the app
-ALLOWED_HOSTS = [host.strip() for host in config('ALLOWED_HOSTS', default='*').split(',')]
+# -----------------------------------------------------------------------------
+# ALLOWED HOSTS
+# -----------------------------------------------------------------------------
+ALLOWED_HOSTS = ["*"]
 
-# Application definition
+# -----------------------------------------------------------------------------
+# INSTALLED APPS
+# -----------------------------------------------------------------------------
 INSTALLED_APPS = [
-    # Default Django apps
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-
-    # Your app
-    'tracker',
-
-    # Scheduled jobs
-    'django_crontab',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    # your apps here
 ]
 
-# Scheduled jobs
-CRONJOBS = [
-    ('0 9 * * *', 'django.core.management.call_command', ['send_reminders']),  # Run daily at 9 AM
-]
-
+# -----------------------------------------------------------------------------
+# MIDDLEWARE
+# -----------------------------------------------------------------------------
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",  # <- whitenoise here
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = 'vehicle_maintenance.urls'
+ROOT_URLCONF = "redline.urls"  # change if your project name differs
 
-# Templates configuration
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # Optional global templates directory
-        'APP_DIRS': True,  # Looks inside each app's templates folder (like tracker/templates/tracker/)
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',  # Needed for auth templates
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [BASE_DIR / "templates"],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'vehicle_maintenance.wsgi.application'
+WSGI_APPLICATION = 'vehicle_maintenance.wsgi.application'  # adjust if project name differs
 
-# Database configuration (PostgreSQL)
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST', default='localhost'),
-        'PORT': config('DB_PORT', default='5432'),
+# -----------------------------------------------------------------------------
+# DATABASES
+# -----------------------------------------------------------------------------
+if 'ON_HEROKU' in os.environ:
+    DATABASES = {
+        "default": dj_database_url.config(
+            env='DATABASE_URL',
+            conn_max_age=600,
+            conn_health_checks=True,
+            ssl_require=True,
+        ),
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('DB_NAME', 'redline_db'),
+            'USER': os.getenv('DB_USER', ''),
+            'PASSWORD': os.getenv('DB_PASSWORD', ''),
+            'HOST': os.getenv('DB_HOST', 'localhost'),
+            'PORT': os.getenv('DB_PORT', '5432'),
+        }
+    }
 
-# Password validation
+# -----------------------------------------------------------------------------
+# PASSWORD VALIDATORS
+# -----------------------------------------------------------------------------
 AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
-# Internationalization
+# -----------------------------------------------------------------------------
+# INTERNATIONALIZATION
+# -----------------------------------------------------------------------------
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Static files
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']  # Dev static files
-STATIC_ROOT = BASE_DIR / 'staticfiles'   # Production collectstatic
+# -----------------------------------------------------------------------------
+# STATIC FILES (Whitenoise)
+# -----------------------------------------------------------------------------
+STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-# Default primary key field
+# -----------------------------------------------------------------------------
+# EMAIL SETTINGS (from .env)
+# -----------------------------------------------------------------------------
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True') == 'True'
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
+
+# -----------------------------------------------------------------------------
+# DEFAULT PRIMARY KEY FIELD TYPE
+# -----------------------------------------------------------------------------
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# Authentication URLs
-LOGIN_URL = 'tracker:login'
-LOGIN_REDIRECT_URL = 'tracker:vehicle-list'  
-LOGOUT_REDIRECT_URL = 'tracker:landing'
-
-# Email backend
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = config('EMAIL_HOST')
-EMAIL_PORT = config('EMAIL_PORT', cast=int, default=587)
-EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
-EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool, default=True)
-DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='webmaster@localhost')
-
-# Optional production security settings (uncomment in production)
-# SECURE_SSL_REDIRECT = True
-# SESSION_COOKIE_SECURE = True
-# CSRF_COOKIE_SECURE = True
-# X_FRAME_OPTIONS = 'DENY'
