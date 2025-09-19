@@ -1,6 +1,5 @@
 {% extends "tracker/base.html" %}
 {% load static %}
-{% include 'tracker/navbar.html' %}
 
 {% block title %}{{ vehicle.make }} {{ vehicle.model }} Details{% endblock %}
 
@@ -10,97 +9,112 @@
 {% endblock %}
 
 {% block extra_js %}
-<!-- Model Viewer for 3D Car -->
 <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 {% endblock %}
 
 {% block content %}
-<!-- 3D Car Model Section -->
-<div class="vehicle-3d-container">
-    <model-viewer 
-        src="{% static 'tracker/models/car.glb' %}" 
-        alt="3D Car Model"
-        auto-rotate
-        camera-controls
-        shadow-intensity="1"
-        style="width: 100%; height: 500px; background-color: #1e1e1e; border-radius: 12px;">
-    </model-viewer>
-</div>
 
-<!-- Vehicle Details Section -->
-<div class="vehicle-detail-container">
-    <div class="vehicle-header">
-        <h2>{{ vehicle.make }} {{ vehicle.model }} ({{ vehicle.year }})</h2>
+<!-- === PAGE WRAPPER to center content === -->
+<div class="page-container">
 
-        <!-- Edit/Delete Vehicle Icons -->
-        <div class="card-buttons">
-            <a href="{% url 'tracker:vehicle-update' vehicle.pk %}" class="icon-btn edit" title="Edit Vehicle">
-                <i class="fa fa-pencil"></i>
-            </a>
-            <a href="{% url 'tracker:vehicle-delete' vehicle.pk %}" class="icon-btn delete" title="Delete Vehicle">
-                <i class="fa fa-trash"></i>
-            </a>
+    <!-- ===== Vehicle Title Centered ===== -->
+    <div class="vehicle-title-container">
+        {{ vehicle.make }} {{ vehicle.model }} ({{ vehicle.year }})
+    </div>
+
+    <!-- ===== Main Content: Two-Column Layout ===== -->
+    <div class="main-content">
+        <!-- === Left Column === -->
+        <div class="left-column">
+            <!-- 3D Car Model -->
+            <div class="vehicle-3d-container">
+                <model-viewer 
+                    src="{% static 'tracker/models/car.glb' %}" 
+                    alt="3D Car Model"
+                    auto-rotate
+                    camera-controls
+                    shadow-intensity="1"
+                    environment-image="neutral"
+                    exposure="1"
+                    transparent
+                    disable-zoom
+                    style="width: 100%; height: 500px; background-color: transparent;">
+                </model-viewer>
+            </div>
+
+            <!-- Reminders -->
+            <div class="reminders-container">
+                <h3>Reminders</h3>
+                <a href="{% url 'tracker:reminder-create' vehicle_pk=vehicle.pk %}" class="btn add">+ Add Reminder</a>
+                <ul class="record-list">
+                    {% for reminder in reminders %}
+                        <li class="record-item">
+                            Due: <strong>{{ reminder.due_date }}</strong> {{ reminder.service_type }} – ${{ reminder.cost }}
+                            {% if reminder.is_sent %}
+                                <span class="status sent">(Sent)</span>
+                            {% else %}
+                                <span class="status pending">(Pending)</span>
+                            {% endif %}
+                            <div class="card-buttons-inline">
+                                <a href="{% url 'tracker:reminder-update' reminder.pk %}" class="icon-btn small edit" title="Edit">
+                                    <i class="fa fa-pencil"></i>
+                                </a>
+                                <a href="{% url 'tracker:reminder-delete' reminder.pk %}" class="icon-btn small delete" title="Delete">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </div>
+                        </li>
+                    {% empty %}
+                        <li>No reminders.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <!-- === Right Column === -->
+        <div class="right-column">
+            <!-- Vehicle Info -->
+            <p><strong>VIN:</strong> {{ vehicle.vin }}</p>
+            <p><strong>Mileage:</strong> {{ vehicle.mileage }} miles</p>
+
+            <div class="card-buttons">
+                <a href="{% url 'tracker:vehicle-update' vehicle.pk %}" class="icon-btn edit" title="Edit Vehicle">
+                    <i class="fa fa-pencil"></i>
+                </a>
+                <a href="{% url 'tracker:vehicle-delete' vehicle.pk %}" class="icon-btn delete" title="Delete Vehicle">
+                    <i class="fa fa-trash"></i>
+                </a>
+            </div>
+
+            <hr />
+
+            <!-- Service Records -->
+            <h3>Service Records</h3>
+            <a href="{% url 'tracker:service-record-create' vehicle_pk=vehicle.pk %}" class="btn add">+ Add Service Record</a>
+            <ul class="record-list">
+                {% for record in service_records %}
+                    <li class="record-item">
+                        <strong>{{ record.date }}</strong> {{ record.service_type }} – ${{ record.cost }}
+                        <div class="card-buttons-inline">
+                            <a href="{% url 'tracker:service-record-update' record.pk %}" class="icon-btn small edit" title="Edit">
+                                <i class="fa fa-pencil"></i>
+                            </a>
+                            <a href="{% url 'tracker:service-record-delete' record.pk %}" class="icon-btn small delete" title="Delete">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </div>
+                    </li>
+                {% empty %}
+                    <li>No service records.</li>
+                {% endfor %}
+            </ul>
+
+            <!-- Back Link -->
+            <div class="back-link">
+                <a href="{% url 'tracker:vehicle-list' %}" class="btn add">← Back to Vehicle List</a>
+            </div>
         </div>
     </div>
+</div> <!-- END PAGE CONTAINER -->
 
-    <p><strong>VIN:</strong> {{ vehicle.vin }}</p>
-    <p><strong>Mileage:</strong> {{ vehicle.mileage }} miles</p>
-
-    <hr />
-
-    <!-- Service Records -->
-    <h3>Service Records</h3>
-    <a href="{% url 'tracker:service-record-create' vehicle_pk=vehicle.pk %}" class="btn add">+ Add Service Record</a>
-    <ul class="record-list">
-        {% for record in service_records %}
-        <li class="record-item">
-            <strong>{{ record.date }}</strong> {{ record.service_type }} – ${{ record.cost }}
-            <div class="card-buttons-inline">
-                <a href="{% url 'tracker:service-record-update' record.pk %}" class="icon-btn small edit" title="Edit">
-                    <i class="fa fa-pencil"></i>
-                </a>
-                <a href="{% url 'tracker:service-record-delete' record.pk %}" class="icon-btn small delete" title="Delete">
-                    <i class="fa fa-trash"></i>
-                </a>
-            </div>
-        </li>
-        {% empty %}
-        <li>No service records.</li>
-        {% endfor %}
-    </ul>
-
-    <hr />
-
-    <!-- Reminders -->
-    <h3>Reminders</h3>
-    <a href="{% url 'tracker:reminder-create' vehicle_pk=vehicle.pk %}" class="btn add">+ Add Reminder</a>
-    <ul class="record-list">
-        {% for reminder in reminders %}
-        <li class="record-item">
-            Due: <strong>{{ reminder.due_date }}</strong> {{ reminder.service_type }} – ${{ reminder.cost }}
-            {% if reminder.is_sent %}
-                <span class="status sent">(Sent)</span>
-            {% else %}
-                <span class="status pending">(Pending)</span>
-            {% endif %}
-            <div class="card-buttons-inline">
-                <a href="{% url 'tracker:reminder-update' reminder.pk %}" class="icon-btn small edit" title="Edit">
-                    <i class="fa fa-pencil"></i>
-                </a>
-                <a href="{% url 'tracker:reminder-delete' reminder.pk %}" class="icon-btn small delete" title="Delete">
-                    <i class="fa fa-trash"></i>
-                </a>
-            </div>
-        </li>
-        {% empty %}
-        <li>No reminders.</li>
-        {% endfor %}
-    </ul>
-
-    <!-- Back Button -->
-    <div class="back-link">
-        <a href="{% url 'tracker:vehicle-list' %}" class="btn add">← Back to Vehicle List</a>
-    </div>
-</div>
 {% endblock %}
-
