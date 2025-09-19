@@ -4,28 +4,28 @@ import os
 from dotenv import load_dotenv
 import dj_database_url
 
-# Load .env locally
-load_dotenv()
-
+# -----------------------------------------------------------------------------
+# BASE / ENV
+# -----------------------------------------------------------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load .env locally (does nothing on Heroku)
+load_dotenv()
 
 # -----------------------------------------------------------------------------
 # SECRET KEY
 # -----------------------------------------------------------------------------
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key')  # fallback for local dev
 
 # -----------------------------------------------------------------------------
 # DEBUG
 # -----------------------------------------------------------------------------
-if not 'ON_HEROKU' in os.environ:
-    DEBUG = True
-else:
-    DEBUG = False
+DEBUG = not os.getenv('ON_HEROKU')  # True locally, False on Heroku
 
 # -----------------------------------------------------------------------------
 # ALLOWED HOSTS
 # -----------------------------------------------------------------------------
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["*"]  # or explicitly your domain/heroku app URL
 
 # -----------------------------------------------------------------------------
 # INSTALLED APPS
@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "tracker", 
+    "tracker",  # your app
 ]
 
 # -----------------------------------------------------------------------------
@@ -45,7 +45,7 @@ INSTALLED_APPS = [
 # -----------------------------------------------------------------------------
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",  # <- whitenoise here
+    "whitenoise.middleware.WhiteNoiseMiddleware",  # <- whitenoise
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -72,26 +72,28 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'vehicle_maintenance.wsgi.application'  # adjust if project name differs
+WSGI_APPLICATION = "vehicle_maintenance.wsgi.application"
 
 # -----------------------------------------------------------------------------
 # DATABASES
 # -----------------------------------------------------------------------------
-if 'ON_HEROKU' in os.environ:
+if os.getenv('ON_HEROKU'):
+    # Use DATABASE_URL from Heroku
     DATABASES = {
         "default": dj_database_url.config(
             env='DATABASE_URL',
             conn_max_age=600,
             conn_health_checks=True,
             ssl_require=True,
-        ),
+        )
     }
 else:
+    # Local Postgres dev
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': os.getenv('DB_NAME', 'redline_db'),
-            'USER': os.getenv('DB_USER', ''),
+            'USER': os.getenv('DB_USER', 'postgres'),
             'PASSWORD': os.getenv('DB_PASSWORD', ''),
             'HOST': os.getenv('DB_HOST', 'localhost'),
             'PORT': os.getenv('DB_PORT', '5432'),
@@ -124,7 +126,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # -----------------------------------------------------------------------------
-# EMAIL SETTINGS (from .env)
+# EMAIL SETTINGS
 # -----------------------------------------------------------------------------
 EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
 EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
