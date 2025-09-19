@@ -1,7 +1,4 @@
-"""
-Django settings for redline project (Heroku-ready)
-"""
-
+"""Django settings for vehicle_maintenance project (Heroku-ready)"""
 from pathlib import Path
 import os
 from dotenv import load_dotenv
@@ -57,7 +54,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "redline.urls"  # change if your project name differs
+ROOT_URLCONF = "vehicle_maintenance.urls"
 
 TEMPLATES = [
     {
