@@ -129,6 +129,13 @@ STATICFILES_DIRS = [
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # -----------------------------------------------------------------------------
+# LOGIN 
+# -----------------------------------------------------------------------------
+
+LOGIN_REDIRECT_URL = 'tracker:vehicle-list'
+LOGIN_URL = 'tracker:login'
+
+# -----------------------------------------------------------------------------
 # EMAIL SETTINGS
 # -----------------------------------------------------------------------------
 EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
@@ -142,3 +149,5 @@ DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
 # DEFAULT PRIMARY KEY FIELD TYPE
 # -----------------------------------------------------------------------------
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
