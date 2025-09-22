@@ -1,127 +1,150 @@
-/* Navbar Container */
+/* === NAVBAR STYLES === */
 .navbar {
-    width: 100%;
-    background-color: #ff4c4c; /* Redline red */
-    padding: 0.8rem 1rem;
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1000;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-/* Flex container: logo left, links right */
-.nav-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between; /* logo left, links right */
-    align-items: center;
     width: 100%;
+    z-index: 9999;
+    background: transparent;
+    padding: 0.4rem 1.2rem; /* padding for breathing room */
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* spread children left & right */
+    box-sizing: border-box;
+    backdrop-filter: blur(8px);
 }
 
-/* Logo */
+.nav-container {
+    width: 100%; /* full width */
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* left & right */
+    padding: 0; /* remove any padding */
+    margin: 0; /* remove centering */
+}
+
+/* LOGO LINK (text container) */
 .logo {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 1.6rem;
     color: #fff;
-    font-weight: bold;
-    font-size: 1.5rem;
-    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: none; /* remove glow */
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.3s ease;
 }
 
-/* Nav links container */
+.logo:hover {
+    color: #ff4c4c; /* subtle hover color */
+}
+
+/* LOGO IMAGE */
+.logo img {
+    height: 200px;   /* adjust for desired size (30–50px works well) */
+    width: auto;    /* keep aspect ratio */
+    display: block; /* removes inline gap */
+}
+
+/* Example optional icon if used */
+.logo-icon {
+    font-size: 1.8rem;
+    color: #ff4c4c;
+}
+
+/* NAV LINKS aligned right */
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 0.8rem;
-    margin-left: auto; /* push to right */
+    gap: 1rem;
+    margin-left: auto;
 }
 
-/* Inline form for logout button */
-.inline-form {
-    display: inline;
-    margin: 0;
-}
-
-/* Username text */
 .nav-links span {
-    color: #fff;
-    font-weight: bold;
-    margin-right: 0.5rem;
+    color: #ffffff;
+    font-weight: 500;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.6);
 }
 
-/* Buttons: base style */
-.nav-links .btn,
-.nav-links .logout-btn,
-.nav-links .primary-btn,
-.nav-links .secondary-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem 0.8rem;
-    border-radius: 6px;
+.nav-links a,
+.nav-links button {
+    color: #ffffff;
+    font-size: 1.1rem;
+    background: none;
     border: none;
-    font-weight: 700;
-    font-size: 1rem;
-    text-decoration: none;
-    color: #fff;
     cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.2s ease;
+    padding: 0.5rem 0.8rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
 }
 
-/* Primary Buttons (Login / Dashboard) */
+.nav-links a:hover,
+.nav-links button:hover {
+    color: #ff4c4c;
+    text-shadow: 0 0 10px #ff4c4c;
+    transform: scale(1.1);
+}
+
 .primary-btn {
-    background-color: #1b0000; /* Darker red */
+    background-color: #ff4c4c;
+    color: #fff !important;
+    text-shadow: none;
+    border: none;
+    transition: background-color 0.3s ease;
 }
 
-.primary-btn:hover,
-.primary-btn:focus {
-    background-color: #ffffff; 
-    transform: translateY(-2px);
-    outline: none;
+.primary-btn:hover {
+    background-color: #e63b3b;
+    box-shadow: 0 0 12px #e63b3b;
 }
 
-/* Secondary Buttons (Sign Up) */
 .secondary-btn {
     background-color: transparent;
-    border: 2px solid #fff;
-    color: #fff;
+    border: 2px solid #ff4c4c;
+    color: #ff4c4c !important;
 }
 
-.secondary-btn:hover,
-.secondary-btn:focus {
-    background-color: #fff;
-    color: #e10600;
-    transform: translateY(-2px);
-    outline: none;
+.secondary-btn:hover {
+    background-color: #ff4c4c;
+    color: #fff !important;
+    box-shadow: 0 0 12px #ff4c4c;
 }
 
-/* Logout button as icon */
 .logout-btn {
-    background-color: #555;
-    color: #fff;
+    background-color: transparent;
+    border: 2px solid #ffffff;
+    color: #ffffff;
     border-radius: 50%;
-    width: 36px;
-    height: 36px;
+    padding: 0.5rem;
     font-size: 1rem;
 }
 
-.logout-btn:hover,
-.logout-btn:focus {
-    background-color: #333;
-    transform: scale(1.1);
-    outline: none;
+.logout-btn:hover {
+    background-color: #ff4c4c;
+    color: #fff;
+    border-color: #ff4c4c;
+    box-shadow: 0 0 10px #ff4c4c;
 }
 
-/* Mobile Responsive */
+/* Responsive */
 @media (max-width: 768px) {
     .nav-container {
         flex-direction: column;
         align-items: flex-start;
     }
+
     .nav-links {
         flex-direction: column;
+        align-items: flex-start;
         gap: 0.5rem;
-        margin-left: 0;
-        margin-top: 0.5rem;
+        margin-left: 0; /* reset margin on mobile */
+    }
+
+    .navbar {
+        padding: 1rem;
     }
 }

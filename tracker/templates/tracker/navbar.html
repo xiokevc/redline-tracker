@@ -7,7 +7,9 @@
 <nav class="navbar">
     <div class="nav-container">
         <!-- Logo left -->
-        <a href="{% url 'tracker:landing' %}" class="logo">Redline Tracker</a>
+        <a href="{% url 'tracker:landing' %}" class="logo">
+            <img src="{% static 'tracker/images/logo.svg' %}" alt="Redline Tracker" class="logo-img">
+        </a>
 
         <!-- Links right -->
         <div class="nav-links">
