@@ -20,7 +20,7 @@ Redline Tracker gives you full control over your car care routine—because reli
 
 ## 🚀 Getting Started
 
-🔗 **Live App**: _Coming Soon_  
+🔗 **Live App**: [Redline Tracker](https://redline-tracker-8dde54ed8f81.herokuapp.com/)
 🔗 **GitHub Repo**: [Redline Tracker](https://github.com/xiokevc/redline-tracker)
 
 ---
@@ -60,9 +60,7 @@ Redline Tracker gives you full control over your car care routine—because reli
 
 ## 🗂️ Planning Docs (WIP)
 
-- Wireframes  
-- Trello or Notion Board  
-- Database Schema Diagram 
+- [Redline Tracker Trello](https://trello.com/b/cgxiDrwf/redlinetracker)
 
 ---
 
@@ -71,7 +69,7 @@ Redline Tracker gives you full control over your car care routine—because reli
 - Django Project Boilerplate  
 - PostgreSQL  
 - Google Fonts  
-- Unsplash (for possible background imagery)  
+- Unsplash (background imagery)  
 - Kevin Xiong (Author)
 
 ---
