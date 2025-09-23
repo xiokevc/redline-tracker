@@ -1,15 +1,18 @@
 {% load static %}
-{% include 'tracker/navbar.html' %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Redline Tracker{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'tracker/css/base.css' %}" />
+
+    <!-- Global base styles -->
+    <link rel="stylesheet" href="{% static 'tracker/css/base.css' %}">
     {% block extra_css %}{% endblock %}
 </head>
-<body>
+<body class="{% block body_class %}{% endblock %}">
+
+    {% include "tracker/navbar.html" %}
 
     <main>
         {% block content %}{% endblock %}
@@ -18,8 +21,3 @@
     {% block extra_js %}{% endblock %}
 </body>
 </html>
-
-
-
-
-

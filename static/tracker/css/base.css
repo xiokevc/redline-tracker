@@ -1,4 +1,4 @@
-/* Reset */
+/* ==== Reset ==== */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -9,10 +9,16 @@ body {
     font-family: 'Arial', sans-serif;
     color: #333;
     line-height: 1.6;
-    background-color: #f4f4f4;
+    background-color: #000000;   
 }
 
-/* Prevent main content from being overlapped by navbar */
+/* Prevent main content from being hidden behind the navbar */
 main {
-    margin-top: 80px;
+    margin-top: 80px; 
+}
+
+/* Special override for login page */
+body.login-page {
+    background: url("../images/landing.jpg") no-repeat center center fixed;
+    background-size: cover;
 }
