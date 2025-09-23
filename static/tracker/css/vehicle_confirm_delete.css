@@ -1,20 +1,21 @@
 .delete-vehicle-container {
-    max-width: 600px;
+    max-width: 500px;
     margin: 4rem auto;
-    padding: 2rem;
+    padding: 2.5rem 3rem;
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
     color: #333;
+    text-align: center;
 }
 
 .delete-vehicle-container h2 {
-    color: #c0392b;
-    margin-bottom: 1rem;
-    font-size: 1.8rem;
     font-weight: 700;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: #e74c3c;
+    text-shadow: 0 0 5px rgba(231, 76, 60, 0.6);
 }
 
 .delete-vehicle-container p {
@@ -23,42 +24,73 @@
 }
 
 .delete-form {
-    margin-top: 1.5rem;
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
 }
 
 .btn-confirm {
-    padding: 0.6rem 1.5rem;
+    padding: 0.75rem 1.8rem;
     background-color: #e74c3c;
     color: white;
     font-weight: 700;
     border: none;
-    border-radius: 5px;
+    border-radius: 50px;
     cursor: pointer;
-    margin-right: 1rem;
-    transition: background-color 0.3s ease;
+    font-size: 1.1rem;
+    box-shadow: 0 0 10px #e74c3c;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.15s ease;
 }
 
 .btn-confirm:hover,
 .btn-confirm:focus {
     background-color: #c0392b;
+    box-shadow: 0 0 20px #c0392b;
+    transform: translateY(-2px);
     outline: none;
 }
 
 .btn-cancel {
-    padding: 0.6rem 1.5rem;
+    padding: 0.75rem 1.8rem;
     background-color: #bdc3c7;
     color: #333;
-    text-decoration: none;
-    border-radius: 5px;
     font-weight: 700;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 50px;
+    font-size: 1.1rem;
     cursor: pointer;
+    border: none;
+    text-decoration: none;
     display: inline-block;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.15s ease;
 }
 
 .btn-cancel:hover,
 .btn-cancel:focus {
     background-color: #95a5a6;
     color: white;
+    transform: translateY(-2px);
     outline: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .delete-vehicle-container {
+        padding: 1.5rem 2rem;
+    }
+
+    .delete-vehicle-container h2 {
+        font-size: 1.6rem;
+    }
+
+    .btn-confirm,
+    .btn-cancel {
+        font-size: 1rem;
+        padding: 0.65rem 1.2rem;
+    }
+
+    .delete-form {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
 }

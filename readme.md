@@ -33,6 +33,10 @@ Redline Tracker gives you full control over your car care routine—because reli
 - Pipenv (Dependency Management)  
 - SQLite (for local dev, optional)  
 - Django Admin (for internal use)
+- Adobe Photoshop
+- Canbva
+- Favicon.io (Converter)
+
 
 ---
 
