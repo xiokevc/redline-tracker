@@ -125,3 +125,17 @@
     margin-top: 2rem;
     font-size: 1.1rem;
 }
+
+.empty a {
+    color: #e10600; 
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.empty a:hover,
+.empty a:focus {
+    color: #ff4c4c;
+    text-decoration: underline;
+    outline: none;
+}

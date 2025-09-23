@@ -1,6 +1,5 @@
 {% extends "tracker/base.html" %}
 {% load static %}
-{% include 'tracker/navbar.html' %}
 
 {% block title %}
     {% if form.instance.pk %}Edit Service Record{% else %}Add Service Record{% endif %}
@@ -14,7 +13,7 @@
 <div class="service-record-form-container">
     <h2>{% if form.instance.pk %}Edit Service Record{% else %}Add Service Record{% endif %}</h2>
 
-    <form method="post" class="service-record-form">
+    <form method="post" class="service-record-form" novalidate>
         {% csrf_token %}
         {% for field in form %}
             <div class="form-group">
@@ -26,16 +25,17 @@
             </div>
         {% endfor %}
 
-        <button type="submit" class="btn save">Save</button>
-        {# Use object.vehicle as fallback to ensure URL reverses correctly #}
-        {% if vehicle %}
-            <a href="{% url 'tracker:vehicle-detail' vehicle.id %}" class="btn cancel">Cancel</a>
-        {% elif object.vehicle %}
-            <a href="{% url 'tracker:vehicle-detail' object.vehicle.id %}" class="btn cancel">Cancel</a>
-        {% else %}
-            <a href="{% url 'tracker:vehicle-list' %}" class="btn cancel">Cancel</a>
-        {% endif %}
+        <div class="form-actions">
+            <button type="submit" class="btn-save">Save</button>
+
+            {% if vehicle %}
+                <a href="{% url 'tracker:vehicle-detail' vehicle.id %}" class="btn-cancel">Cancel</a>
+            {% elif object.vehicle %}
+                <a href="{% url 'tracker:vehicle-detail' object.vehicle.id %}" class="btn-cancel">Cancel</a>
+            {% else %}
+                <a href="{% url 'tracker:vehicle-list' %}" class="btn-cancel">Cancel</a>
+            {% endif %}
+        </div>
     </form>
 </div>
 {% endblock %}
-

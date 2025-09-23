@@ -1,40 +1,55 @@
 .service-record-form-container {
     max-width: 500px;
     margin: 4rem auto;
-    padding: 2.5rem 2rem;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
-    font-family: Arial, sans-serif;
-    color: #333;
+    padding: 2.5rem 3rem;
+    background-color: #1e1e1e; 
+    border-radius: 12px;
+    box-shadow: 0 6px 24px rgba(255, 76, 76, 0.4);
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
 }
 
 .service-record-form-container h2 {
     text-align: center;
     margin-bottom: 1.5rem;
-    font-size: 1.8rem;
-    font-weight: 700;
+    font-weight: 600;
+    font-size: 2rem;
+    color: #ff4c4c;
+    text-shadow: 0 0 10px #ff4c4c;
 }
 
 .service-record-form .form-group {
-    margin-bottom: 1.2rem;
+    margin-bottom: 1.5rem;
+    text-align: left;
 }
 
 .service-record-form label {
     display: block;
-    font-weight: 700;
-    margin-bottom: 0.3rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    color: #fff;
 }
 
 .service-record-form input,
 .service-record-form select,
 .service-record-form textarea {
     width: 100%;
-    padding: 0.6rem;
+    padding: 0.7rem 1rem;
     font-size: 1rem;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    transition: border-color 0.3s ease;
+    border: 1px solid #444;
+    border-radius: 8px;
+    background-color: #121212;
+    color: #fff;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    resize: vertical;
+}
+
+.service-record-form input::placeholder,
+.service-record-form select::placeholder,
+.service-record-form textarea::placeholder {
+    color: #bbb;
 }
 
 .service-record-form input:focus,
@@ -42,50 +57,85 @@
 .service-record-form textarea:focus {
     border-color: #ff4c4c;
     outline: none;
+    box-shadow: 0 0 8px rgba(255, 76, 76, 0.7);
 }
 
 .error {
-    color: #b30000;
+    color: #ff6b6b;
+    background-color: #330000;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    margin-top: 0.4rem;
     font-size: 0.9rem;
-    margin-top: 0.3rem;
 }
 
+/* Buttons container */
+.form-actions {
+    margin-top: 1.5rem;
+    display: flex;
+    align-items: center;
+}
+
+/* Save button */
 .btn-save {
-    padding: 0.6rem 1.5rem;
+    padding: 0.75rem 1.5rem;
     background-color: #ff4c4c;
-    color: white;
+    color: #fff;
     font-weight: 700;
     border: none;
-    border-radius: 5px;
+    border-radius: 50px;
     cursor: pointer;
+    font-size: 1.1rem;
+    box-shadow: 0 0 10px #ff4c4c;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.12s ease;
     margin-right: 1rem;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
 }
 
 .btn-save:hover,
 .btn-save:focus {
-    background-color: #ff0000;
+    background-color: #e63b3b;
+    box-shadow: 0 0 20px #e63b3b;
+    transform: translateY(-2px);
     outline: none;
 }
 
+/* Cancel button aligned right */
 .btn-cancel {
-    padding: 0.6rem 1.5rem;
-    background-color: #ccc;
-    color: #333;
+    padding: 0.75rem 1.5rem;
+    background-color: #444;
+    color: #ddd;
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 50px;
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 1.1rem;
     cursor: pointer;
     display: inline-block;
     border: none;
     transition: background-color 0.3s ease, color 0.3s ease;
+    margin-left: auto;  
 }
 
 .btn-cancel:hover,
 .btn-cancel:focus {
-    background-color: #999;
-    color: white;
+    background-color: #666;
+    color: #fff;
     outline: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .service-record-form-container {
+        padding: 1.5rem 2rem;
+    }
+
+    .service-record-form-container h2 {
+        font-size: 1.6rem;
+    }
+
+    .btn-save,
+    .btn-cancel {
+        font-size: 1rem;
+        padding: 0.65rem 1.2rem;
+    }
 }

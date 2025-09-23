@@ -1,6 +1,5 @@
 {% extends "tracker/base.html" %}
 {% load static %}
-{% include 'tracker/navbar.html' %}
 
 {% block title %}
     {% if form.instance.pk %}Edit Reminder{% else %}Add Reminder{% endif %}
@@ -14,27 +13,40 @@
 <div class="reminder-form-container">
     <h2>{% if form.instance.pk %}Edit Reminder{% else %}Add Reminder{% endif %}</h2>
 
-    <form method="post" class="reminder-form">
+    <form method="post" class="reminder-form" novalidate>
         {% csrf_token %}
         {% for field in form %}
             <div class="form-group">
-                {{ field.label_tag }}
-                {{ field }}
-                {% if field.errors %}
-                    <div class="error">{{ field.errors|striptags }}</div>
+                {% if field.name == "email_sent" %}
+                    <label class="checkbox-label">
+                        {{ field }}
+                        {{ field.label }}
+                    </label>
+                    {% if field.errors %}
+                        <div class="error">{{ field.errors|striptags }}</div>
+                    {% endif %}
+                {% else %}
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="error">{{ field.errors|striptags }}</div>
+                    {% endif %}
                 {% endif %}
             </div>
         {% endfor %}
 
-        <button type="submit" class="btn save">Save</button>
+        <div class="form-actions" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+            <button type="submit" class="btn-save">Save</button>
 
-        {% if form.instance.vehicle %}
-            <a href="{% url 'tracker:vehicle-detail' form.instance.vehicle.pk %}" class="btn cancel">Cancel</a>
-        {% else %}
-            <a href="{% url 'tracker:vehicle-list' %}" class="btn cancel">Cancel</a>
-        {% endif %}
+            {% if form.instance.vehicle %}
+                <a href="{% url 'tracker:vehicle-detail' form.instance.vehicle.pk %}" class="btn-cancel">Cancel</a>
+            {% else %}
+                <a href="{% url 'tracker:vehicle-list' %}" class="btn-cancel">Cancel</a>
+            {% endif %}
+        </div>
     </form>
 </div>
 {% endblock %}
+
 
 

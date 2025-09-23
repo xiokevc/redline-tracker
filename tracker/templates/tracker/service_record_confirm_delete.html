@@ -19,13 +19,13 @@
 
     <form method="post" class="delete-form">
         {% csrf_token %}
-        <button type="submit" class="btn confirm">Yes, delete</button>
+        <button type="submit" class="btn-confirm">Yes, delete</button>
 
         {# Cancel button safely redirects even if vehicle is missing #}
         {% if object.vehicle %}
-            <a href="{% url 'tracker:vehicle-detail' object.vehicle.pk %}" class="btn cancel">Cancel</a>
+            <a href="{% url 'tracker:vehicle-detail' object.vehicle.pk %}" class="btn-cancel">Cancel</a>
         {% else %}
-            <a href="{% url 'tracker:vehicle-list' %}" class="btn cancel">Cancel</a>
+            <a href="{% url 'tracker:vehicle-list' %}" class="btn-cancel">Cancel</a>
         {% endif %}
     </form>
 </div>
