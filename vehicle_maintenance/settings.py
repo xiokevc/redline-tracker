@@ -3,32 +3,32 @@ import os
 from dotenv import load_dotenv
 import dj_database_url
 
-# -----------------------------------------------------------------------------
-# BASE / ENV
-# -----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# BASE / ENV SETUP
+# ---------------------------------------------------------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+# Load environment variables from .env file if present
 load_dotenv()
 
-# -----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # SECRET KEY
-# -----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key')  
 
-# -----------------------------------------------------------------------------
-# DEBUG
-# -----------------------------------------------------------------------------
-DEBUG = not os.getenv('ON_HEROKU')  
+# ---------------------------------------------------------------------------
+# DEBUG MODE
+# ---------------------------------------------------------------------------
+DEBUG = not bool(os.getenv('ON_HEROKU'))  
 
-# -----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # ALLOWED HOSTS
-# -----------------------------------------------------------------------------
-ALLOWED_HOSTS = ["*"]  
+# ---------------------------------------------------------------------------
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')  
 
-# -----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # INSTALLED APPS
-# -----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -36,15 +36,15 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "tracker",  
+    "tracker",
 ]
 
-# -----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # MIDDLEWARE
-# -----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware", 
+    "whitenoise.middleware.WhiteNoiseMiddleware",  
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -53,17 +53,23 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+# ---------------------------------------------------------------------------
+# ROOT URL CONFIGURATION
+# ---------------------------------------------------------------------------
 ROOT_URLCONF = "vehicle_maintenance.urls"
 
+# ---------------------------------------------------------------------------
+# TEMPLATES
+# ---------------------------------------------------------------------------
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
+        "DIRS": [BASE_DIR / "templates"],  # Global templates directory
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.debug",
-                "django.template.context_processors.request",
+                "django.template.context_processors.request",  
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
             ],
@@ -71,13 +77,15 @@ TEMPLATES = [
     },
 ]
 
+# ---------------------------------------------------------------------------
+# WSGI APPLICATION
+# ---------------------------------------------------------------------------
 WSGI_APPLICATION = "vehicle_maintenance.wsgi.application"
 
-# -----------------------------------------------------------------------------
-# DATABASES
-# -----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# DATABASE CONFIGURATION
+# ---------------------------------------------------------------------------
 if os.getenv('ON_HEROKU'):
-    # Use DATABASE_URL from Heroku
     DATABASES = {
         "default": dj_database_url.config(
             env='DATABASE_URL',
@@ -87,7 +95,6 @@ if os.getenv('ON_HEROKU'):
         )
     }
 else:
-    # Local Postgres dev
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -99,9 +106,9 @@ else:
         }
     }
 
-# -----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # PASSWORD VALIDATORS
-# -----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
@@ -109,45 +116,40 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
-# -----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # INTERNATIONALIZATION
-# -----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# -----------------------------------------------------------------------------
-# STATIC FILES (Whitenoise)
-# -----------------------------------------------------------------------------
-STATIC_URL = "static/"
+# ---------------------------------------------------------------------------
+# STATIC FILES (CSS, JavaScript, Images)
+# ---------------------------------------------------------------------------
+STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_DIRS = [
-    BASE_DIR / "static",  
-]
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-# -----------------------------------------------------------------------------
-# LOGIN 
-# -----------------------------------------------------------------------------
-
+# ---------------------------------------------------------------------------
+# AUTHENTICATION SETTINGS
+# ---------------------------------------------------------------------------
 LOGIN_REDIRECT_URL = 'tracker:vehicle-list'
 LOGIN_URL = 'tracker:login'
 
-# -----------------------------------------------------------------------------
-# EMAIL SETTINGS
-# -----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# EMAIL CONFIGURATION
+# ---------------------------------------------------------------------------
 EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
 EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True') == 'True'
-DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True').lower() in ('true', '1', 'yes')
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER)
 
-# -----------------------------------------------------------------------------
-# DEFAULT PRIMARY KEY FIELD TYPE
-# -----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# DEFAULT AUTO FIELD
+# ---------------------------------------------------------------------------
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-

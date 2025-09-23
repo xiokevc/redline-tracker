@@ -11,7 +11,7 @@ body.signup-page {
     color: #ffffff;
     line-height: 1.6;
     overflow-x: hidden;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 /* ===== Wrapper with full-page background and centering ===== */
@@ -25,7 +25,6 @@ body.signup-page {
     padding: 1rem;
 }
 
-/* Dark overlay for contrast */
 .signup-page-wrapper::before {
     content: "";
     position: absolute;
@@ -48,7 +47,7 @@ body.signup-page {
     text-align: center;
 }
 
-/* Signup heading */
+/* ===== Signup heading ===== */
 .signup-container h2 {
     margin-bottom: 1.4rem;
     font-weight: 600;
@@ -57,7 +56,7 @@ body.signup-page {
     text-shadow: 0 0 10px #ff4c4c;
 }
 
-/* ===== Form fields ===== */
+/* ===== Form Fields ===== */
 .signup-form .form-group {
     margin-bottom: 1.25rem;
     text-align: left;
@@ -71,7 +70,10 @@ body.signup-page {
     color: #fff;
 }
 
-.signup-form input {
+/* Input field base */
+.signup-form input,
+.signup-form select,
+.signup-form textarea {
     width: 100%;
     padding: 0.6rem 0.8rem;
     font-size: 1rem;
@@ -80,16 +82,51 @@ body.signup-page {
     background-color: #121212;
     color: #fff;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    font-family: inherit;
 }
 
-.signup-form input::placeholder {
+.signup-form input::placeholder,
+.signup-form textarea::placeholder {
     color: #bbb;
 }
 
-.signup-form input:focus {
+.signup-form input:focus,
+.signup-form select:focus,
+.signup-form textarea:focus {
     border-color: #ff4c4c;
     outline: none;
     box-shadow: 0 0 8px rgba(255, 76, 76, 0.6);
+}
+
+/* ===== Hover Message Logic ===== */
+.field-wrapper {
+    position: relative;
+}
+
+.field-message {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #330000;
+    color: #ff6b6b;
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    margin-top: 0.3rem;
+    box-shadow: 0 2px 8px rgba(255, 76, 76, 0.3);
+    z-index: 10;
+}
+
+/* Only show on hover */
+.field-wrapper:hover .field-message {
+    display: block;
+}
+
+/* Optional: show also on focus for accessibility */
+.field-wrapper:focus-within .field-message {
+    display: block;
 }
 
 /* ===== Signup button ===== */
@@ -115,7 +152,7 @@ body.signup-page {
     outline: none;
 }
 
-/* ===== Error messages ===== */
+/* ===== Error Messages (non-field or top-level) ===== */
 .error-message,
 .error {
     color: #ff6b6b;
@@ -126,7 +163,7 @@ body.signup-page {
     font-weight: 600;
 }
 
-/* ===== Login link under form ===== */
+/* ===== Login Link ===== */
 .login-link {
     margin-top: 1rem;
     font-size: 0.95rem;
@@ -144,18 +181,6 @@ body.signup-page {
 .login-link a:focus {
     color: #e63b3b;
     text-decoration: underline;
-}
-
-/* ===== Responsive ===== */
-@media (max-width: 768px) {
-    .signup-container {
-        max-width: 100%;
-        padding: 1.5rem 1.75rem;
-    }
-
-    .signup-container h2 {
-        font-size: 1.5rem;
-    }
 }
 
 /* ===== Contact Section ===== */
@@ -203,10 +228,18 @@ body.signup-page {
         0 0 20px #ff4c4c;
 }
 
+/* ===== Responsive ===== */
 @media (max-width: 768px) {
+    .signup-container {
+        max-width: 100%;
+        padding: 1.5rem 1.75rem;
+    }
+
+    .signup-container h2,
     .contact-section h2 {
         font-size: 1.5rem;
     }
+
     .social-icons {
         gap: 1rem;
         font-size: 1.5rem;

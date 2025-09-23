@@ -13,11 +13,11 @@
 
 {% block content %}
 <div class="login-page-wrapper">
-    <div class="login-container">
-        <h2>Login</h2>
+    <div class="login-container" role="main" aria-labelledby="login-title">
+        <h2 id="login-title">Login</h2>
 
         {% if form.non_field_errors %}
-            <div class="error-message">
+            <div class="error-message" role="alert" aria-live="assertive">
                 {% for error in form.non_field_errors %}
                     <p>{{ error }}</p>
                 {% endfor %}
@@ -27,23 +27,33 @@
         <form method="post" class="login-form" novalidate>
             {% csrf_token %}
 
+            <!-- Username -->
             <div class="form-group">
                 <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
-                {{ form.username }}
-                {% if form.username.errors %}
-                    <div class="error">{{ form.username.errors|striptags }}</div>
-                {% endif %}
+                <div class="field-wrapper">
+                    {{ form.username }}
+                    {% if form.username.errors %}
+                        <div class="field-message" role="alert" aria-live="assertive">
+                            {{ form.username.errors|striptags }}
+                        </div>
+                    {% endif %}
+                </div>
             </div>
 
+            <!-- Password -->
             <div class="form-group">
                 <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
-                {{ form.password }}
-                {% if form.password.errors %}
-                    <div class="error">{{ form.password.errors|striptags }}</div>
-                {% endif %}
+                <div class="field-wrapper">
+                    {{ form.password }}
+                    {% if form.password.errors %}
+                        <div class="field-message" role="alert" aria-live="assertive">
+                            {{ form.password.errors|striptags }}
+                        </div>
+                    {% endif %}
+                </div>
             </div>
 
-            <button type="submit" class="btn-login">Login</button>
+            <button type="submit" class="btn-login" aria-label="Submit login form">Login</button>
         </form>
 
         <p class="signup-link">
@@ -54,25 +64,24 @@
 </div>
 
 <!-- Contact Footer -->
-<section class="contact-section">
+<section class="contact-section" aria-label="Contact Information">
     <div class="container">
         <h2>Contact Us</h2>
         <p>Have questions or want to connect? Find us on social media!</p>
         <div class="social-icons">
             <a href="https://facebook.com/" target="_blank" aria-label="Facebook" rel="noopener noreferrer">
-                <i class="fab fa-facebook-f"></i>
+                <i class="fab fa-facebook-f" aria-hidden="true"></i>
             </a>
             <a href="https://twitter.com/" target="_blank" aria-label="Twitter" rel="noopener noreferrer">
-                <i class="fab fa-twitter"></i>
+                <i class="fab fa-twitter" aria-hidden="true"></i>
             </a>
             <a href="https://instagram.com/" target="_blank" aria-label="Instagram" rel="noopener noreferrer">
-                <i class="fab fa-instagram"></i>
+                <i class="fab fa-instagram" aria-hidden="true"></i>
             </a>
             <a href="mailto:contact@redlinetracker.com" aria-label="Email">
-                <i class="fas fa-envelope"></i>
+                <i class="fas fa-envelope" aria-hidden="true"></i>
             </a>
         </div>
     </div>
 </section>
 {% endblock %}
-

@@ -1,13 +1,13 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView, LogoutView
 
 from .models import Vehicle, ServiceRecord, Reminder
-from .forms import VehicleForm, ServiceRecordForm, ReminderForm
+from .forms import VehicleForm, ServiceRecordForm, ReminderForm, SignUpForm
 
 
 # 🏠 Landing page
@@ -17,16 +17,16 @@ def landing(request):
     return render(request, 'tracker/landing.html')
 
 
-# 👤 Signup view
+# 👤 Signup view - 
 def signup(request):
     if request.method == "POST":
-        form = UserCreationForm(request.POST)
+        form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('tracker:vehicle-list')
+            return redirect('tracker:vehicle-list')  
     else:
-        form = UserCreationForm()
+        form = SignUpForm()
     return render(request, 'registration/signup.html', {'form': form})
 
 
@@ -154,7 +154,6 @@ class ServiceRecordDeleteView(LoginRequiredMixin, DeleteView):
         return reverse('tracker:vehicle-list')
 
 
-
 # ⏰ Reminder Views
 class ReminderCreateView(LoginRequiredMixin, CreateView):
     model = Reminder
@@ -210,4 +209,3 @@ class ReminderDeleteView(LoginRequiredMixin, DeleteView):
         if vehicle:
             return reverse('tracker:vehicle-detail', kwargs={'pk': vehicle.pk})
         return reverse('tracker:vehicle-list')
-

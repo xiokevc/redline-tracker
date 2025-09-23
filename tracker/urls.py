@@ -29,4 +29,3 @@ urlpatterns = [
     path('reminder/<int:pk>/edit/', views.ReminderUpdateView.as_view(), name='reminder-update'),
     path('reminder/<int:pk>/delete/', views.ReminderDeleteView.as_view(), name='reminder-delete'),
 ]
-
